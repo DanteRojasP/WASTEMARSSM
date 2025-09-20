@@ -1,0 +1,133 @@
+{
+  "wastes": [
+    {
+      "id": "81LUL2qczZC87K1cDsZTU",
+      "name": "Envase plástico",
+      "type": "Plástico",
+      "percentage": 35,
+      "description": "Botellas y envases plásticos",
+      "recycling": [
+        "Reciclado mecánico",
+        "Upcycle"
+      ]
+    },
+    {
+      "id": "AmcoSmJ1AFjK8Ormc7IFz",
+      "name": "Lata de aluminio",
+      "type": "Metal",
+      "percentage": 10,
+      "description": "Latas y piezas metálicas",
+      "recycling": [
+        "Reciclado",
+        "Fundición"
+      ]
+    },
+    {
+      "id": "dr9tXfbkbpG8hRGohcgcH",
+      "name": "Restos orgánicos",
+      "type": "Orgánico",
+      "percentage": 30,
+      "description": "Residuos biodegradables",
+      "recycling": [
+        "Compost"
+      ]
+    },
+    {
+      "id": "-7DynlwR9Ij2JMWZp1HUV",
+      "name": "Vidrio",
+      "type": "Vidrio",
+      "percentage": 15,
+      "description": "Botellas y frascos",
+      "recycling": [
+        "Reciclado"
+      ]
+    }
+  ],
+  "users": [],
+  "inventory": [
+    {
+      "id": "RRfpZOqEB5cgaN0C6WPWe",
+      "key": "anon:81LUL2qczZC87K1cDsZTU",
+      "userName": "anon",
+      "wasteId": "81LUL2qczZC87K1cDsZTU",
+      "qty": 2
+    },
+    {
+      "id": "AOx0905jqh2V1ra1u2uFS",
+      "key": "player1:81LUL2qczZC87K1cDsZTU",
+      "userName": "player1",
+      "wasteId": "81LUL2qczZC87K1cDsZTU",
+      "qty": 3
+    },
+    {
+      "id": "QdCRFOW7rMYQ7Ug3nwmk1",
+      "key": "player1:AmcoSmJ1AFjK8Ormc7IFz",
+      "userName": "player1",
+      "wasteId": "AmcoSmJ1AFjK8Ormc7IFz",
+      "qty": 3
+    },
+    {
+      "id": "q6hDNrllWkzByuTeGERGh",
+      "key": "anon:-7DynlwR9Ij2JMWZp1HUV",
+      "userName": "anon",
+      "wasteId": "-7DynlwR9Ij2JMWZp1HUV",
+      "qty": 1
+    },
+    {
+      "id": "1FwpNH4d5z86agXiieIcX",
+      "key": "player1:-7DynlwR9Ij2JMWZp1HUV",
+      "userName": "player1",
+      "wasteId": "-7DynlwR9Ij2JMWZp1HUV",
+      "qty": 4
+    },
+    {
+      "id": "aLF93JAQnAYwJ7OcKeb73",
+      "key": "player1:dr9tXfbkbpG8hRGohcgcH",
+      "userName": "player1",
+      "wasteId": "dr9tXfbkbpG8hRGohcgcH",
+      "qty": 3
+    }
+  ],
+  "scores": [
+    {
+      "id": "YcJ4xTsMl-sq3CBc3pnmr",
+      "userName": "anon",
+      "score": 3
+    },
+    {
+      "id": "hW0oWouZweF8MMS1bulut",
+      "userName": "player1",
+      "score": 13
+    },
+    {
+      "id": "h-rCEbWLicNS7ykh1PSbi",
+      "userName": "player1",
+      "score": 10
+    },
+    {
+      "id": "D-oYpDQHi0EcXD9jdxg5Z",
+      "userName": "player1",
+      "score": 10
+    },
+    {
+      "id": "Zpki4yLoA61rjw29Im3Ff",
+      "userName": "player1",
+      "score": 10
+    },
+    {
+      "id": "inb5T3woi6TFIXna9mreW",
+      "userName": "player1",
+      "score": 10
+    },
+    {
+      "id": "lVhP-fVdc3aGPYrCLQk4K",
+      "userName": "player1",
+      "score": 10
+    },
+    {
+      "id": "Gkvq7JWkClEALybR3htNi",
+      "userName": "player1",
+      "score": 10
+    }
+  ]
+}
