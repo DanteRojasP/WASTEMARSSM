@@ -1,93 +1,117 @@
-const express = require('express');
-const cors = require('cors');
-const path = require('path');
-const { nanoid } = require('nanoid');
-const low = require('lowdb');
-const FileSync = require('lowdb/adapters/FileSync');
+// backend/server.js
+import express from "express";
+import cors from "cors";
+import dotenv from "dotenv";
+import fetch from "node-fetch";
+import { recyclingData } from "./recyclingData.js";
+
+dotenv.config();
 
 const app = express();
-const port = process.env.PORT || 4000;
-
-app.use(cors());
 app.use(express.json());
 
-// db setup (lowdb v1)
-const file = path.join(__dirname, 'data', 'db.json');
-const adapter = new FileSync(file);
-const db = low(adapter);
+const FRONTEND_URL = process.env.FRONTEND_URL || "http://localhost:5173";
+app.use(cors({ origin: FRONTEND_URL }));
 
-// inicializa estructura si no existe
-db.defaults({ wastes: [], users: [], inventory: [], scores: [] }).write();
+// 🔹 Historial de conversación (simple en memoria)
+const conversations = {};
 
-// seed inicial
-if (db.get('wastes').value().length === 0) {
-  db.get('wastes')
-    .push(
-      { id: nanoid(), name: "Envase plástico", type: "Plástico", percentage: 35, description: "Botellas y envases plásticos", recycling: ["Reciclado mecánico", "Upcycle"] },
-      { id: nanoid(), name: "Lata de aluminio", type: "Metal", percentage: 10, description: "Latas y piezas metálicas", recycling: ["Reciclado", "Fundición"] },
-      { id: nanoid(), name: "Restos orgánicos", type: "Orgánico", percentage: 30, description: "Residuos biodegradables", recycling: ["Compost"] },
-      { id: nanoid(), name: "Vidrio", type: "Vidrio", percentage: 15, description: "Botellas y frascos", recycling: ["Reciclado"] }
-    )
-    .write();
-  console.log("DB seeded");
-}
+const SYSTEM_PROMPT = `
+You are an expert recycling assistant on Mars.
 
-// API: listar wastes
-app.get('/api/waste', (req, res) => {
-  res.json(db.get('wastes').value());
-});
+You already know how to recycle the following materials: ${Object.keys(recyclingData).join(", ")}.  
+(If the user asks about these, respond ONLY with the information you already have).
 
-// API: obtener por id
-app.get('/api/waste/:id', (req, res) => {
-  const w = db.get('wastes').find({ id: req.params.id }).value();
-  if (!w) return res.status(404).json({ error: "Not found" });
-  res.json(w);
-});
+If the user asks about an unlisted material, create 2 or 3 plausible recycling ideas 
+adapted to Martian conditions. Respond in a brief list and use 1 or 2 emojis.
 
-// crear waste
-app.post('/api/waste', (req, res) => {
-  const newW = { id: nanoid(), ...req.body };
-  db.get('wastes').push(newW).write();
-  res.json(newW);
-});
+⚠️ Important: if the user replies with something short like "yes," "no," or "ok," 
+interpret that response in the context of your last question or suggestion.
 
-// recoger item
-app.post('/api/collect', (req, res) => {
-  const { userName = "anon", wasteId, qty = 1 } = req.body;
-  const invKey = `${userName}:${wasteId}`;
+If someone asks about other topics, kindly reply that you only talk about Martian recycling.
+`;
 
-  const inv = db.get('inventory').find({ key: invKey }).value();
-  if (inv) {
-    db.get('inventory').find({ key: invKey }).assign({ qty: inv.qty + qty }).write();
-  } else {
-    db.get('inventory').push({ id: nanoid(), key: invKey, userName, wasteId, qty }).write();
+// ✅ Ruta de asistente
+app.post("/api/assistant", async (req, res) => {
+  try {
+    const { message, sessionId = "default" } = req.body;
+
+    if (!message) {
+      return res.status(400).json({ error: "Falta el mensaje del usuario" });
+    }
+
+    const userMessage = message.toLowerCase();
+
+    // Crear sesión si no existe
+    if (!conversations[sessionId]) {
+      conversations[sessionId] = [];
+    }
+
+    // 1️⃣ Buscar en recyclingData con keywords
+    for (const [material, data] of Object.entries(recyclingData)) {
+      if (
+        (data.keywords ?? [material]).some(k =>
+          userMessage.includes(k.toLowerCase())
+        )
+      ) {
+        const reply = `♻️ On Mars, **${material}** can be recycled like this:\n\n👉 ${data.uso}\n🔧 You’ll need: ${data.requerimientos.join(", ")}`;
+
+
+        conversations[sessionId].push({ role: "user", content: message });
+        conversations[sessionId].push({ role: "assistant", content: reply });
+
+        return res.json({ reply });
+      }
+    }
+
+    // 2️⃣ Si no está en DB, usar OpenAI con historial
+    conversations[sessionId].push({ role: "user", content: message });
+
+    // ✅ Preparamos historial (SYSTEM_PROMPT siempre va primero)
+    const history = [
+      { role: "system", content: SYSTEM_PROMPT },
+      ...conversations[sessionId].slice(-10) // solo últimos 10 mensajes para no sobrecargar
+    ];
+
+    const r = await fetch("https://api.openai.com/v1/chat/completions", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${process.env.OPENAI_API_KEY}`,
+      },
+      body: JSON.stringify({
+        model: "gpt-4.1-mini",
+        messages: history,
+        max_completion_tokens: 200,
+      }),
+    });
+
+    if (!r.ok) {
+      const text = await r.text();
+      console.error("OpenAI error:", text);
+      return res.status(500).json({ error: "Error desde OpenAI", detail: text });
+    }
+
+    const data = await r.json();
+    const reply = data.choices?.[0]?.message?.content ?? "No recibí respuesta.";
+
+    // Guardar respuesta en historial
+    conversations[sessionId].push({ role: "assistant", content: reply });
+
+    res.json({ reply });
+
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "server error" });
   }
-
-  // puntuación
-  const pts = qty;
-  const userScore = db.get('scores').find({ userName }).value();
-  if (userScore) {
-    db.get('scores').find({ userName }).assign({ score: userScore.score + pts }).write();
-  } else {
-    db.get('scores').push({ id: nanoid(), userName, score: pts }).write();
-  }
-
-  res.json({ ok: true });
 });
 
-// leaderboard
-app.get('/api/leaderboard', (req, res) => {
-  const sorted = db.get('scores').sortBy('score').reverse().value();
-  res.json(sorted);
+// ✅ Ruta de bienvenida
+app.get("/api/welcome", (req, res) => {
+  res.json({
+    reply: "👋 Welcome to the Martian Recycling Assistant. Ask me how to recycle materials on Mars, and I’ll tell you how to do it."
+  });
 });
 
-// post score manual
-app.post('/api/score', (req, res) => {
-  const { userName = "anon", score = 0 } = req.body;
-  db.get('scores').push({ id: nanoid(), userName, score }).write();
-  res.json({ ok: true });
-});
-
-app.listen(port, () => {
-  console.log(`Server running on http://localhost:${port}`);
-});
+const port = process.env.PORT || 3001;
+app.listen(port, () => console.log(`Assistant proxy running on http://localhost:${port}`));

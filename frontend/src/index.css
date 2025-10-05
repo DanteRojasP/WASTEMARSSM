@@ -1,7 +1,158 @@
+/* === Fuentes === */
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700&display=swap');
+
+/* index.css */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-/* Estilos básicos */
-html, body, #root { height: 100%; }
-body { @apply bg-black text-white; }
+/* === Reset básico === */
+html, body, #root {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  background: black;
+  color: white;
+  font-family: 'Orbitron', sans-serif;
+}
+
+/* === Scrollbar GLOBAL en gris === */
+html::-webkit-scrollbar,
+body::-webkit-scrollbar {
+  width: 8px;
+}
+
+html::-webkit-scrollbar-track,
+body::-webkit-scrollbar-track {
+  background: #111;
+  border-radius: 9999px;
+}
+
+html::-webkit-scrollbar-thumb,
+body::-webkit-scrollbar-thumb {
+  background: #555;
+  border-radius: 9999px;
+  border: 2px solid #111;
+}
+
+html::-webkit-scrollbar-thumb:hover,
+body::-webkit-scrollbar-thumb:hover {
+  background: #777;
+}
+
+/* Firefox */
+html, body {
+  scrollbar-width: thin;
+  scrollbar-color: #555 #111;
+}
+
+/* === Scrollbar custom SOLO para el carrito === */
+.cart-scroll::-webkit-scrollbar {
+  width: 6px; /* más delgadita */
+}
+
+.cart-scroll::-webkit-scrollbar-track {
+  background: #111; /* fondo oscuro */
+  border-radius: 9999px;
+}
+
+.cart-scroll::-webkit-scrollbar-thumb {
+  background: #FF9D6F; /* color naranja de tu web */
+  border-radius: 9999px;
+  border: 2px solid #111; /* borde que hace que se vea separada */
+}
+
+.cart-scroll::-webkit-scrollbar-thumb:hover {
+  background: #ff8449; /* hover un poco más claro */
+}
+
+/* === Animaciones === */
+@keyframes fadeZoom {
+  0% {
+    opacity: 0;
+    transform: scale(1.1);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.animate-fadeZoom {
+  animation: fadeZoom 1s ease-in-out forwards;
+}
+
+/* === Tooltip efecto hover === */
+.colony-tooltip {
+  opacity: 0;
+  transition: opacity 0.2s ease-in-out;
+}
+
+div:hover > .colony-tooltip {
+  display: block !important;
+  opacity: 1;
+}
+
+.colony-marker {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.circle {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: white;
+  border: 1px solid white;
+  cursor: pointer;
+}
+
+.hexagon-icon {
+  width: 14px;
+  height: 14px;
+  stroke: #aaa;   /* gris bonito */
+  stroke-width: 3;
+  fill: none;     /* sin fondo */
+}
+
+/* Tooltip justo arriba del circulito */
+.tooltip {
+  position: absolute;
+  bottom: 120%; /* arriba del círculo */
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(0, 0, 0, 0.85);
+  color: white;
+  font-size: 10px;
+  padding: 4px 6px;
+  border-radius: 6px;
+  border: 1px solid white;
+  text-align: center;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease-in-out;
+  z-index: 10;
+}
+
+.colony-marker:hover .tooltip {
+  opacity: 1;
+}
+
+/* Nombre fijo arriba del waypoint */
+.label {
+  position: absolute;
+  bottom: 160%;
+  left: 50%;
+  transform: translateX(-50%);
+  color: white;
+  font-size: 10px;
+  font-weight: 600;
+  font-family: 'Orbitron', sans-serif;
+  text-shadow: 0 0 4px rgba(0, 0, 0, 0.8);
+  white-space: nowrap;
+  pointer-events: none;
+}

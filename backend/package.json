@@ -11,8 +11,10 @@
   "description": "",
   "dependencies": {
     "cors": "^2.8.5",
+    "dotenv": "^17.2.2",
     "express": "^5.1.0",
     "lowdb": "^1.0.0",
-    "nanoid": "^5.1.5"
+    "nanoid": "^5.1.5",
+    "node-fetch": "^3.3.2"
   }
 }

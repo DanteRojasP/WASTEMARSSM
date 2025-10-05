@@ -1,0 +1,2018 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🚀WASTECRAFT - Martian recycling game</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Space+Mono:wght@400;700&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Space Mono', monospace;
+            background: radial-gradient(ellipse at center, #1a1a1a 0%, #0f0f0f 30%, #050505 70%, #000000 100%);
+            color: #ffffff;
+            overflow-x: auto;
+            min-height: 100vh;
+            position: relative;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(2px 2px at 20px 30px, #eee, transparent),
+                radial-gradient(2px 2px at 40px 70px, rgba(255,255,255,0.8), transparent),
+                radial-gradient(1px 1px at 90px 40px, #fff, transparent),
+                radial-gradient(1px 1px at 130px 80px, rgba(255,255,255,0.6), transparent),
+                radial-gradient(2px 2px at 160px 30px, #ddd, transparent);
+            background-repeat: repeat;
+            background-size: 200px 100px;
+            animation: sparkle 20s linear infinite;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        @keyframes sparkle {
+            from { transform: translateY(0); }
+            to { transform: translateY(-200px); }
+        }
+
+        body::after {
+            content: '';
+            position: fixed;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255, 165, 79, 0.08) 0%, transparent 50%),
+                        radial-gradient(circle at 70% 80%, rgba(255, 140, 60, 0.1) 0%, transparent 50%);
+            animation: nebula 30s ease-in-out infinite alternate;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        @keyframes nebula {
+            0% { transform: rotate(0deg) scale(1); }
+            100% { transform: rotate(360deg) scale(1.1); }
+        }
+
+        .container {
+            min-height: 100vh;
+            padding: 0;
+            position: relative;
+            z-index: 2;
+        }
+
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(135deg, rgba(20, 20, 20, 0.95) 0%, rgba(40, 40, 40, 0.9) 100%);
+            color: #ffffff;
+            padding: 20px;
+            text-align: center;
+            font-family: 'Orbitron', monospace;
+            font-size: 18px;
+            font-weight: 700;
+            z-index: 1000;
+            backdrop-filter: blur(15px) saturate(180%);
+            border-bottom: 2px solid rgba(255, 165, 79, 0.5);
+            box-shadow: 0 4px 32px rgba(0,0,0,0.3);
+        }
+
+        .stats {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 16px;
+            padding: 0 20px;
+            width: 100%;
+        }
+
+        .stats img {
+            height: 60px;
+            margin-right: 20px;
+        }
+
+        .stats .progress-bar {
+            width: 250px;
+            height: 12px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            overflow: hidden;
+            border: 1px solid rgba(255, 165, 79, 0.3);
+            position: relative;
+            margin-left: 10px;
+        }
+
+        .stats .progress-bar::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            animation: scan 2s linear infinite;
+        }
+
+        @keyframes scan {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+
+        .stats .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #000000 0%, #ffa54f 50%, #ffffff 100%);
+            transition: width 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            border-radius: 10px;
+        }
+
+        .stats .progress-fill::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 20px;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.5));
+            filter: blur(2px);
+        }
+
+        body {
+            font-family: 'Space Mono', monospace;
+            background: radial-gradient(ellipse at center, #1a1a1a 0%, #0f0f0f 30%, #050505 70%, #000000 100%);
+            color: #ffffff;
+            overflow-x: auto;
+            min-height: 100vh;
+            position: relative;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(2px 2px at 20px 30px, #eee, transparent),
+                radial-gradient(2px 2px at 40px 70px, rgba(255,255,255,0.8), transparent),
+                radial-gradient(1px 1px at 90px 40px, #fff, transparent),
+                radial-gradient(1px 1px at 130px 80px, rgba(255,255,255,0.6), transparent),
+                radial-gradient(2px 2px at 160px 30px, #ddd, transparent);
+            background-repeat: repeat;
+            background-size: 200px 100px;
+            animation: sparkle 20s linear infinite;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        @keyframes sparkle {
+            from { transform: translateY(0); }
+            to { transform: translateY(-200px); }
+        }
+
+        body::after {
+            content: '';
+            position: fixed;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255, 165, 79, 0.08) 0%, transparent 50%),
+                        radial-gradient(circle at 70% 80%, rgba(255, 140, 60, 0.1) 0%, transparent 50%);
+            animation: nebula 30s ease-in-out infinite alternate;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        @keyframes nebula {
+            0% { transform: rotate(0deg) scale(1); }
+            100% { transform: rotate(360deg) scale(1.1); }
+        }
+
+        .container {
+            min-height: 100vh;
+            padding: 0;
+            position: relative;
+            z-index: 2;
+        }
+
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(135deg, rgba(20, 20, 20, 0.95) 0%, rgba(40, 40, 40, 0.9) 100%);
+            color: #ffffff;
+            padding: 20px;
+            text-align: center;
+            font-family: 'Orbitron', monospace;
+            font-size: 18px;
+            font-weight: 700;
+            z-index: 1000;
+            backdrop-filter: blur(15px) saturate(180%);
+            border-bottom: 2px solid rgba(255, 165, 79, 0.5);
+            box-shadow: 0 4px 32px rgba(0,0,0,0.3);
+        }
+
+        .main-content {
+            margin-top: 90px;
+            display: grid;
+            grid-template-columns: 350px 1fr;
+            gap: 25px;
+            padding: 25px;
+            min-height: calc(100vh - 90px);
+            position: relative;
+            z-index: 2;
+            align-items: start;
+        }
+
+        .panel-base {
+            background: linear-gradient(145deg, rgba(30, 30, 30, 0.9) 0%, rgba(20, 20, 20, 0.95) 100%);
+            border-radius: 20px;
+            padding: 25px;
+            backdrop-filter: blur(20px) saturate(180%);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 
+                0 8px 32px rgba(0, 0, 0, 0.3),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .panel-base::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(255, 165, 79, 0.8), transparent);
+        }
+
+        .elements-panel {
+            min-width: 380px;
+            height: calc(100vh - 140px);
+            max-height: none;
+            overflow-y: auto;
+            position: sticky;
+            top: 90px;
+        }
+
+        .elements-panel h3 {
+            margin-bottom: 25px;
+            color: #ffffff;
+            text-align: center;
+            font-family: 'Orbitron', monospace;
+            font-size: 22px;
+            font-weight: 900;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+        }
+
+        .elements-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+        }
+
+        .element {
+            background: linear-gradient(145deg, 
+                rgba(60, 60, 60, 0.9) 0%, 
+                rgba(80, 80, 80, 0.8) 50%, 
+                rgba(50, 50, 50, 0.9) 100%);
+            border: 1px solid rgba(255, 165, 79, 0.3);
+            border-radius: 15px;
+            padding: 15px 10px;
+            text-align: center;
+            cursor: grab;
+            font-weight: 700;
+            font-size: 12px;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            user-select: none;
+            box-shadow: 
+                0 6px 20px rgba(255, 165, 79, 0.15),
+                inset 0 1px 0 rgba(255, 255, 255, 0.2);
+            min-height: 70px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #ffffff;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .element::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 165, 79, 0.3), transparent);
+            transition: left 0.5s;
+        }
+
+        .element:hover::before {
+            left: 100%;
+        }
+
+        .element:hover {
+            transform: translateY(-5px) scale(1.02);
+            box-shadow: 
+                0 12px 30px rgba(255, 165, 79, 0.4),
+                inset 0 1px 0 rgba(255, 255, 255, 0.4);
+            border-color: rgba(255, 165, 79, 0.6);
+        }
+
+        .element:active,
+        .element.dragging {
+            cursor: grabbing;
+            transform: scale(1.08) rotate(2deg);
+            opacity: 0.9;
+        }
+
+        .workspace-panel {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            background: linear-gradient(145deg, rgba(25, 25, 25, 0.9) 0%, rgba(35, 35, 35, 0.95) 100%);
+            position: relative;
+            width: 100%;
+            min-width: 0;
+            min-height: 0;
+            gap: 30px;
+        }
+
+        .combination-zone {
+            width: 90%;
+            max-width: 1500px;
+            height: 500px;
+            margin-bottom: 0;
+            margin-top: 0;
+        }
+
+        .refabricator-zone {
+            width: 100%;
+            max-width: 1500px;
+            margin-top: 0;
+            margin-bottom: 0;
+            padding: 20px 0 20px 0;
+        }
+
+        .combination-zone {
+            width: 90%;
+            height: 500px;
+            border: 3px dashed rgba(255, 165, 79, 0.5);
+            border-radius: 25px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(145deg, rgba(30, 30, 30, 0.8) 0%, rgba(40, 40, 40, 0.6) 100%);
+            font-size: 16px;
+            color: #ffffff;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            font-family: 'Space Mono', monospace;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            margin-bottom: 30px;
+        }
+
+        .combination-zone::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(45deg, #ffa54f, #000000, #ffffff, #ffa54f);
+            background-size: 400% 400%;
+            border-radius: 25px;
+            z-index: -1;
+            animation: gradient-border 4s ease infinite;
+            opacity: 0.5;
+        }
+
+        @keyframes gradient-border {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        .combination-zone.drag-over {
+            border-color: #00ff88;
+            background: linear-gradient(145deg, rgba(0, 255, 136, 0.1) 0%, rgba(100, 200, 255, 0.2) 100%);
+            transform: scale(1.05);
+            box-shadow: 
+                0 0 40px rgba(0, 255, 136, 0.4),
+                inset 0 0 30px rgba(0, 255, 136, 0.2);
+        }
+
+        .floating-element {
+            position: absolute;
+            background: linear-gradient(145deg, 
+                rgba(80, 80, 80, 0.95) 0%, 
+                rgba(100, 100, 100, 0.9) 50%, 
+                rgba(70, 70, 70, 0.95) 100%);
+            border: 2px solid rgba(255, 165, 79, 0.6);
+            border-radius: 15px;
+            padding: 10px 15px;
+            font-weight: 700;
+            font-size: 12px;
+            color: #ffffff;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.7);
+            box-shadow: 
+                0 8px 25px rgba(255, 165, 79, 0.3),
+                inset 0 1px 0 rgba(255, 255, 255, 0.3);
+            cursor: move;
+            user-select: none;
+            z-index: 10;
+            transition: transform 0.2s ease;
+            touch-action: none;
+            pointer-events: auto;
+        }
+
+        .floating-element:hover {
+            transform: scale(1.05);
+            z-index: 100;
+        }
+
+        .floating-element:active {
+            transform: scale(1.1);
+            z-index: 1000;
+            cursor: grabbing;
+        }
+
+        .combination-effect {
+            position: absolute;
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(255, 165, 79, 0.8) 0%, rgba(255, 255, 255, 0.4) 50%, transparent 100%);
+            pointer-events: none;
+            animation: combine-explosion 1s ease-out;
+            z-index: 50;
+        }
+
+        @keyframes combine-explosion {
+            0% {
+                transform: scale(0);
+                opacity: 1;
+            }
+            50% {
+                transform: scale(1.5);
+                opacity: 0.8;
+            }
+            100% {
+                transform: scale(3);
+                opacity: 0;
+            }
+        }
+
+        .result-notification {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: linear-gradient(145deg, rgba(255, 165, 79, 0.95) 0%, rgba(255, 140, 60, 0.9) 100%);
+            color: #000;
+            padding: 20px 40px;
+            border-radius: 15px;
+            font-family: 'Orbitron', monospace;
+            font-weight: 700;
+            font-size: 18px;
+            z-index: 1001;
+            animation: notification-pop 2.5s ease-out forwards;
+            min-width: 300px;
+            box-shadow: 0 4px 10px rgba(255, 165, 79, 0.15);
+            text-align: center;
+        }
+
+        .result-notification.new-discovery {
+            background: linear-gradient(145deg, rgba(255, 165, 79, 0.95) 0%, rgba(255, 140, 60, 0.9) 100%);
+            animation: notification-pop-new 3s ease-out forwards;
+            box-shadow: 0 4px 15px rgba(255, 165, 79, 0.2);
+        }
+
+        .result-notification.error {
+            background: linear-gradient(145deg, rgba(255, 71, 87, 0.95) 0%, rgba(220, 20, 60, 0.9) 100%);
+            color: #fff;
+            animation: notification-shake 2s ease-out forwards;
+            box-shadow: 0 4px 10px rgba(255, 71, 87, 0.15);
+        }
+
+        @keyframes notification-pop {
+            0% {
+                transform: translate(-50%, -50%) scale(0);
+                opacity: 0;
+            }
+            20% {
+                transform: translate(-50%, -50%) scale(1.2);
+                opacity: 1;
+            }
+            80% {
+                transform: translate(-50%, -50%) scale(1);
+                opacity: 1;
+            }
+            100% {
+                transform: translate(-50%, -50%) scale(0);
+                opacity: 0;
+            }
+        }
+
+        @keyframes notification-pop-new {
+            0% {
+                transform: translate(-50%, -50%) scale(0);
+                opacity: 0;
+            }
+            15% {
+                transform: translate(-50%, -50%) scale(1.3);
+                opacity: 1;
+            }
+            85% {
+                transform: translate(-50%, -50%) scale(1);
+                opacity: 1;
+            }
+            100% {
+                transform: translate(-50%, -50%) scale(0);
+                opacity: 0;
+            }
+        }
+
+        @keyframes notification-shake {
+            0%, 100% {
+                transform: translate(-50%, -50%) scale(1);
+            }
+            10%, 30%, 50%, 70%, 90% {
+                transform: translate(-50%, -50%) scale(1) translateX(-5px);
+            }
+            20%, 40%, 60%, 80% {
+                transform: translate(-50%, -50%) scale(1) translateX(5px);
+            }
+        }
+
+        .instructions-panel {
+            min-width: 320px;
+            max-height: calc(100vh - 140px);
+            overflow-y: auto;
+            background: linear-gradient(145deg, rgba(30, 30, 30, 0.9) 0%, rgba(25, 25, 25, 0.95) 100%);
+        }
+
+        .instructions-panel h3 {
+            margin-bottom: 20px;
+            color: #ffffff;
+            text-align: center;
+            font-family: 'Orbitron', monospace;
+            font-size: 20px;
+            font-weight: 900;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+        }
+
+        .instructions-panel p {
+            line-height: 1.7;
+            margin-bottom: 12px;
+            font-size: 14px;
+            color: #ffffff;
+        }
+
+        .instructions-panel strong {
+            color: #ffa54f;
+            font-family: 'Orbitron', monospace;
+        }
+
+        .stats {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 16px;
+            padding: 0 20px;
+            width: 100%;
+        }
+
+        .progress-bar {
+            width: 250px;
+            height: 12px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            overflow: hidden;
+            border: 1px solid rgba(255, 165, 79, 0.3);
+            position: relative;
+            margin-left: 10px;
+        }
+
+        #stats-text {
+            color: #ffffff;
+            font-family: 'Orbitron', monospace;
+            font-weight: bold;
+        }
+
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: rgba(20, 20, 40, 0.5);
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(180deg, #ffffff 0%, #cccccc 100%);
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(180deg, #ffffff 0%, #dddddd 100%);
+        }
+
+        @media (max-width: 1200px) {
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+            
+            .elements-panel {
+                min-width: auto;
+                max-height: 400px;
+            }
+            
+            .combination-zone {
+                width: 95%;
+                height: 400px;
+            }
+        }
+
+        .hologram {
+            position: relative;
+        }
+
+        .hologram::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, transparent 30%, rgba(255, 255, 255, 0.1) 50%, transparent 70%);
+            pointer-events: none;
+            animation: hologram 3s linear infinite;
+        }
+
+        @keyframes hologram {
+            0% { transform: translateX(-100%) skewX(-15deg); }
+            100% { transform: translateX(200%) skewX(-15deg); }
+        }
+
+        .refabricator-zone {
+            width: 100%;
+            max-width: 1500px;
+            margin-top: 0;
+            margin-bottom: 0;
+            padding: 20px 0 20px 0;
+        }
+
+        .refabricator-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            min-height: 400px;
+            padding: 20px;
+        }
+
+        .refabricator-input, .refabricator-output {
+            background: rgba(0, 255, 136, 0.1);
+            border: 2px dashed rgba(0, 255, 136, 0.4);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            font-size: 12px;
+            transition: all 0.3s ease;
+            font-family: 'Orbitron', monospace;
+        }
+
+        .refabricator-input:hover, .refabricator-output:hover {
+            background: rgba(0, 255, 136, 0.2);
+            transform: scale(1.05);
+        }
+
+        .product-selector {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(8px);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
+
+        .product-selector-content {
+            background: linear-gradient(145deg, rgba(20, 20, 20, 0.95) 0%, rgba(30, 30, 30, 0.95) 100%);
+            border-radius: 20px;
+            padding: 30px;
+            width: 90%;
+            max-width: 800px;
+            border: 1px solid rgba(0, 255, 136, 0.3);
+            box-shadow: 0 0 30px rgba(0, 255, 136, 0.2);
+        }
+
+        .product-selector h3 {
+            color: #00ff88;
+            font-family: 'Orbitron', monospace;
+            font-size: 24px;
+            text-align: center;
+            margin-bottom: 30px;
+            text-shadow: 0 0 10px rgba(0, 255, 136, 0.5);
+        }
+
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+            max-height: 60vh;
+            overflow-y: auto;
+            padding: 10px;
+        }
+
+        .product-option {
+            background: linear-gradient(145deg, rgba(40, 40, 40, 0.9) 0%, rgba(50, 50, 50, 0.9) 100%);
+            border: 1px solid rgba(0, 255, 136, 0.2);
+            border-radius: 10px;
+            padding: 15px;
+            text-align: center;
+            cursor: pointer;
+            color: #ffffff;
+            transition: all 0.3s ease;
+        }
+
+        .product-option:hover {
+            background: linear-gradient(145deg, rgba(0, 255, 136, 0.1) 0%, rgba(0, 255, 136, 0.2) 100%);
+            transform: translateY(-2px);
+            border-color: rgba(0, 255, 136, 0.6);
+            box-shadow: 0 0 20px rgba(0, 255, 136, 0.3);
+        }
+
+        .close-selector {
+            background: #00ff88;
+            color: #000;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-family: 'Orbitron', monospace;
+            font-weight: bold;
+            cursor: pointer;
+            display: block;
+            margin: 20px auto 0;
+            transition: all 0.3s ease;
+        }
+
+        .close-selector:hover {
+            background: #00cc6a;
+            transform: scale(1.05);
+        }
+
+        .category-title {
+            grid-column: 1 / -1;
+            color: #00ff88;
+            font-family: 'Orbitron', monospace;
+            font-size: 18px;
+            margin-top: 20px;
+            margin-bottom: 10px;
+            padding-bottom: 5px;
+            border-bottom: 1px solid rgba(0, 255, 136, 0.3);
+        }
+
+        .printing-progress {
+            width: 200px;
+            height: 36px;
+            background: rgba(0, 255, 136, 0.1);
+            border-radius: 10px;
+            overflow: hidden;
+            position: relative;
+            border: 1px solid rgba(0, 255, 136, 0.3);
+        }
+
+        .printing-bar {
+            width: 0%;
+            height: 100%;
+            background: linear-gradient(90deg, 
+                rgba(0, 255, 136, 0.5) 0%, 
+                rgba(0, 255, 136, 0.8) 50%, 
+                rgba(0, 255, 136, 0.5) 100%);
+            transition: width 1s linear;
+            position: relative;
+        }
+
+        .printing-text {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            color: #00ff88;
+            font-size: 12px;
+            white-space: nowrap;
+            text-shadow: 0 0 5px rgba(0, 255, 136, 0.5);
+            font-family: 'Orbitron', monospace;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="main-content">
+            <div class="elements-panel panel-base">
+                <h3>📦 Available Materials</h3>
+                <div class="elements-grid" id="elements-grid">
+                </div>
+            </div>
+
+            <div class="workspace-panel panel-base">
+                <h3 style="margin-bottom: 20px; color: #ffa54f; font-family: 'Orbitron', monospace; font-size: 24px;">
+                    ⚗️ Automatic Combination Zone
+                </h3>
+                
+                <div class="combination-zone" id="combination-zone">
+                    <div style="text-align: center;">
+                        <div style="font-size: 48px; margin-bottom: 10px;">🔬</div>
+                        <div>Drag materials here</div>
+                        <div style="font-size: 12px; opacity: 0.7; margin-top: 5px;">
+                            The elements will automatically combine when joined together.
+                        </div>
+                    </div>
+                    <button id="clear-combination-zone" style="position:absolute;top:10px;right:10px;z-index:10;background:#ffa54f;color:#000;border:none;padding:6px 14px;border-radius:8px;cursor:pointer;font-family:'Orbitron',monospace;font-weight:bold;">Clean Area</button>
+                </div>
+
+                <div class="refabricator-zone panel-base" id="refabricator-zone">
+                    <h3 style="color: #00ff88; font-family: 'Orbitron', monospace; font-size: 25px; margin-bottom: 5px;">
+                            🖨️ Refabricator - 3D printer
+                    </h3>
+                    <div style="color: #00ff88; font-size: 20px; text-align: center; margin: 0 auto -60px auto; max-width: 750px; line-height: 1.5; padding: 0 20px; font-family: 'Orbitron', monospace;">
+        NASA's Refabricator is a device that accepts plastic materials of different sizes and shapes and converts them into filament for 3D printing. The entire process is performed automatically in a single machine, approximately the size of a dorm room refrigerator.
+    </div>
+                    <div class="refabricator-container" style="background: url('./nasa-printer.png') 40px/300px no-repeat; height: 300px; position: relative;">
+                        <div class="refabricator-input" id="refabricator-input" 
+                            style="position: absolute; left: 17%; top: 55%; transform: translate(-50%, -50%); width: 105px; height: 100px; background: rgba(0, 255, 136, 0.1); color: #00ff88; font-size: 12px;">
+                            Plastic materials here
+                        </div>
+                        <div class="refabricator-process" 
+                            style="position: absolute; left: 47%; top: 55%; transform: translate(-50%, -50%); color: #00ff88;">
+                            <div class="printing-progress">
+                                <div class="printing-bar"></div>
+                                <div class="printing-text">Printing...</div>
+                            </div>
+                        </div>
+                        <div class="refabricator-output" id="refabricator-output" 
+                            style="position: absolute; left: 50%; top: 55%; transform: translate(50%, -50%); width: 300px; height: 150px; background: rgba(0, 255, 136, 0.1); color: #00ff88; font-size: 20px; display: flex; flex-direction: column; align-items: center; justify-content: flex-start;">
+                            <div style="margin-top: 10px;">Manufacturing Area</div>
+                            <button id="clear-refabricator-output"
+                                style="margin-top: 12px; position: static; background: #00ff88; color: #000; border: none; padding: 6px 14px; border-radius: 8px; font-size: 12px; cursor: pointer; font-family:'Orbitron',monospace;font-weight:bold;">
+                                Clean Area
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="product-selector" id="product-selector" style="display: none;">
+                    <div class="product-selector-content">
+                        <h3>🖨️ Select the product to be created</h3>
+                        <div class="product-grid" id="product-options">
+                        </div>
+                        <button class="close-selector">close</button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        class MarsRecyclingGame {
+            constructor() {
+                this.recipes = new Map();
+                this.discoveredElements = new Set([
+                    "♻️ Recycled Plastic",
+                    "💭 Bubble Wrap",
+                    "🧪 PLA Filament",
+                    "🎯 ABS Filament",
+                    "📦 Plastic Bags",
+
+                    "🧵 Synthetic Fibers",
+                    "👕 Space Fabric",
+                    "🧺 Cotton Towels",
+                    "🎽 Nylon Fibers",
+
+                    "⚙️ Structural Aluminum",
+                    "🔧 Metal Struts",
+                    "🛠️ Light Alloys",
+                    "⛓️ Metal Waste",
+
+                    "🔬 Polymer Composites",
+                    "🛡️ Carbon Fiber",
+                    "🌡️ Special Resins",
+                    "🧪 Polymeric Matrices",
+                    "🪨 Martian Dust"
+                ]);
+                this.materialCategories = {
+                    "PLASTICS": [
+                        "♻️ Recycled Plastic",
+                        "💭 Bubble Wrap",
+                        "🧪 PLA Filament",
+                        "🎯 ABS Filament",
+                        "📦 Plastic Bags"
+                    ],
+                    "TEXTILES/FIBERS": [
+                        "🧵 Synthetic Fibers",
+                        "👕 Space Fabric",
+                        "🧺 Cotton Towels",
+                        "🎽 Nylon Fibers"
+                    ],
+                    "METALLIC": [
+                        "⚙️ Structural Aluminum",
+                        "🔧 Metal Struts",
+                        "🛠️ Light Alloys",
+                        "⛓️ Metal Waste"
+                    ],
+                    "COMPOUNDS": [
+                        "🔬 Polymer Composites",
+                        "🛡️ Carbon Fiber",
+                        "🌡️ Special Resins",
+                        "🧪 Polymeric Matrices",
+                        "🪨 Martian Dust"
+                    ],
+                    "RECYCLED PRODUCTS": []
+                };
+
+                this.refabricatorProducts = {
+                    "UTENSILS": [
+                        "🥄 Space Cutlery",
+                        "🍽️ Plates and Glasses",
+                        "🥢 Multipurpose Utensils",
+                        "🥣 Food Containers"
+                    ],
+                    "CONTAINERS": [
+                        "📦 Airtight Containers",
+                        "🗑️ Waste Containers",
+                        "🧊 Storage Boxes",
+                        "🥡 Thermal Containers"
+                    ],
+                    "TOOLS": [
+                        "🔧 3D manufactured tool",
+                        "🛠️ Repair Kit",
+                        "📏 Rules and Meters",
+                        "🔨 Precision Tools"
+                    ],
+                    "COMPONENTS": [
+                        "⚙️ Gears and Pulleys",
+                        "🔩 Screws and Nuts",
+                        "📎 Clips and Fasteners",
+                        "🔌 Electronic Cases"
+                    ]
+                };
+                this.floatingElements = new Map();
+                this.nextElementId = 0;
+                
+                this.initializeRecipes();
+                this.initializeEventListeners();
+                this.updateDisplay();
+            }
+
+            initializeRecipes() {
+                const recipes = [
+
+                    ["♻️ Recycled Plastic", "🧪 PLA Filament", "🥄 Plastic Utensils"],
+                    ["🧪 PLA Filament", "🎯 ABS Filament", "🍽️ Plates and Glasses"],
+                    ["💭 Bubble Wrap", "♻️ Recycled Plastic", "📦 Airtight Containers"],
+                    ["📦 Plastic Bags", "🎯 ABS Filament", "🗑️ Waste Containers"],  
+                    ["💭 Bubble Wrap", "📦 Plastic Bags", "📦 Protective Packaging"],
+
+                    ["🥄 Plastic Utensils", "📦 Airtight Containers", "🛠️ Basic Tools"],
+                    ["🍽️ Plates and Glasses", "🗑️ Waste Containers", "🚰 Piping and Connectors"],
+                    ["🪨 Martian Dust", "🛠️ Basic Tools", "🏗️ Building Blocks"],
+
+                    ["🛠️ Basic Tools", "🏗️ Building Blocks", "🔧 Simple Replacement Parts"],
+                    ["🚰 Piping and Connectors", "🔧 Simple Replacement Parts", "📏 Rules and Meters"],
+                    ["🔧 Simple Replacement Parts", "📏 Rules and Meters", "🔨 Precision Tools"],
+
+                    ["🧵 Synthetic Fibers", "👕 Space Fabric", "👨‍🚀 Space Underwear"],
+                    ["🧺 Cotton Towels", "🎽 Nylon Fibers", "🧤 Insulated Gloves"],
+
+                    ["⚙️ Structural Aluminum", "🔧 Metal Struts", "🏗️ Base Structure"],
+                    ["🛠️ Light Alloys", "⛓️ Metal Waste", "⚡ Metallic Conductors"],
+                    ["⚡ Metallic Conductors", "⚙️ Structural Aluminum", "🎮 Electronic Components"],
+
+                    ["🔬 Polymer Composites", "🛡️ Carbon Fiber", "🚀 Advanced Panels"], 
+                    ["🌡️ Special Resins", "🧪 Polymeric Matrices", "🛡️ Heat Shields"],
+                ];
+                
+                recipes.forEach(([el1, el2, result]) => {
+                    const key = this.createKey(el1, el2);
+                    if (!this.recipes.has(key)) {
+                        this.recipes.set(key, []);
+                    }
+                    this.recipes.get(key).push(result);
+                });
+            }
+
+            createKey(element1, element2) {
+                return element1 <= element2 ? `${element1}+${element2}` : `${element2}+${element1}`;
+            }
+
+            initializeEventListeners() {
+                const combinationZone = document.getElementById('combination-zone');
+                const refabricatorInput = document.querySelector('.refabricator-input');
+                [combinationZone, refabricatorInput].forEach(zone => {
+                    zone.addEventListener('dragover', e => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                    });
+
+                    zone.addEventListener('dragenter', e => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        zone.classList.add('drag-over');
+                    });
+
+                    zone.addEventListener('dragleave', e => {
+                        if (!zone.contains(e.relatedTarget)) {
+                            zone.classList.remove('drag-over');
+                        }
+                    });
+                });
+                combinationZone.addEventListener('drop', e => this.handleZoneDrop(e, 'combination'));
+                refabricatorInput.addEventListener('drop', e => this.handleZoneDrop(e, 'refabricator'));
+
+                document.getElementById('clear-combination-zone').addEventListener('click', () => {
+                    this.clearZone(document.getElementById('combination-zone'));
+                });
+                document.getElementById('clear-refabricator-output').addEventListener('click', () => {
+                    this.clearZone(document.getElementById('refabricator-output'));
+                });
+            }
+
+            handleZoneDrop(e, zoneType) {
+                e.preventDefault();
+                e.stopPropagation();
+
+                const zone = e.currentTarget;
+                zone.classList.remove('drag-over');
+
+                let elementData = e.dataTransfer.getData('text/plain');
+                let element;
+                try {
+                    const parsed = JSON.parse(elementData);
+                    if (parsed.type === 'floating') {
+                        element = parsed.element;
+                    } else {
+                        element = elementData;
+                    }
+                } catch {
+                    element = elementData;
+                }
+
+                const existingElements = Array.from(zone.getElementsByClassName('floating-element'));
+                const elementExists = existingElements.some(el => {
+                    const elementType = el.dataset.elementType;
+                    return elementType === element;
+                });
+
+                if (elementExists) {
+                    this.showNotification("⚠️ This material is already in the area", "error");
+                    return;
+                }
+
+                const rect = zone.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+
+                if (zoneType === 'refabricator') {
+                    if (this.isPlasticMaterial(element)) {
+                        this.showProductSelector(element, x, y, zone);
+                    } else {
+                        this.showNotification("❌ Only plastic materials in the Refabricator", 'error');
+                    }
+                    return;
+                }
+
+                this.createFloatingElement(element, x, y, zone);
+            }
+
+            createFloatingElement(element, x, y, container) {
+                const elementId = this.nextElementId++;
+                const floatingDiv = document.createElement('div');
+                floatingDiv.className = 'floating-element';
+                floatingDiv.textContent = element;
+                
+                if (container.id === 'refabricator-output') {
+                    floatingDiv.style.position = 'relative';
+                    floatingDiv.style.left = '0';
+                    floatingDiv.style.top = '0';
+                    floatingDiv.style.margin = '5px';
+                } else {
+                    floatingDiv.style.position = 'absolute';
+                    floatingDiv.style.left = `${x}px`;
+                    floatingDiv.style.top = `${y}px`;
+                    
+                    let offsetX = 0;
+                    let offsetY = 0;
+                    let isMoving = false;
+
+                    const onMouseDown = (e) => {
+                        isMoving = true;
+                        const rect = floatingDiv.getBoundingClientRect();
+                        offsetX = e.clientX - rect.left;
+                        offsetY = e.clientY - rect.top;
+                        e.preventDefault();
+                    };
+
+                    const onMouseMove = (e) => {
+                        if (!isMoving) return;
+
+                        const containerRect = container.getBoundingClientRect();
+                        let newX = e.clientX - containerRect.left - offsetX;
+                        let newY = e.clientY - containerRect.top - offsetY;
+
+                        const elementRect = floatingDiv.getBoundingClientRect();
+                        const maxX = containerRect.width - elementRect.width;
+                        const maxY = containerRect.height - elementRect.height;
+
+                        newX = Math.min(Math.max(0, newX), maxX);
+                        newY = Math.min(Math.max(0, newY), maxY);
+
+                        floatingDiv.style.left = `${newX}px`;
+                        floatingDiv.style.top = `${newY}px`;
+
+                        this.checkProximityAndCombine(floatingDiv, elementId, container);
+                    };
+
+                    const onMouseUp = () => {
+                        if (isMoving) {
+                            this.checkProximityAndCombine(floatingDiv, elementId, container);
+                            isMoving = false;
+                        }
+                    };
+
+                    floatingDiv.addEventListener('mousedown', onMouseDown);
+                    document.addEventListener('mousemove', onMouseMove);
+                    document.addEventListener('mouseup', onMouseUp);
+                }
+
+                floatingDiv.draggable = false;
+                floatingDiv.dataset.elementId = elementId;
+                floatingDiv.dataset.elementType = element;
+
+                container.appendChild(floatingDiv);
+                this.floatingElements.set(elementId, {
+                    element: floatingDiv,
+                    type: element
+                });
+
+                return floatingDiv;
+            }
+
+            checkProximityAndCombine(element, elementId, container) {
+                const rect1 = element.getBoundingClientRect();
+                const elements = Array.from(container.getElementsByClassName('floating-element'));
+                
+                elements.forEach(otherElement => {
+                    const otherId = parseInt(otherElement.dataset.elementId);
+                    if (otherId === parseInt(elementId)) return;
+                    
+                    const rect2 = otherElement.getBoundingClientRect();
+                    const distance = Math.hypot(
+                        (rect1.left + rect1.width/2) - (rect2.left + rect2.width/2),
+                        (rect1.top + rect1.height/2) - (rect2.top + rect2.height/2)
+                    );
+                    
+                    if (distance < 50) {
+                        if (this.floatingElements.has(elementId) && this.floatingElements.has(otherId)) {
+                            this.combineFloatingElements(elementId, otherId, element, container);
+                        }
+                    }
+                });
+            }
+
+            combineFloatingElements(id1, id2, targetElement, container) {
+                const element1Data = this.floatingElements.get(id1);
+                const element2Data = this.floatingElements.get(id2);
+
+                if (!element1Data || !element2Data) return;
+
+                const element1Type = element1Data.type;
+                const element2Type = element2Data.type;
+                
+                const key = this.createKey(element1Type, element2Type);
+                const results = this.recipes.get(key);
+
+                if (results && results.length > 0) {
+                    const rect = targetElement.getBoundingClientRect();
+                    const centerX = rect.left + rect.width/2;
+                    const centerY = rect.top + rect.height/2;
+                    
+                    this.removeFloatingElement(id1);
+                    this.removeFloatingElement(id2);
+                    this.createCombinationEffect(targetElement, container);
+                    
+                    const notification = document.createElement('div');
+                    notification.className = 'result-notification';
+                    notification.innerHTML = `
+                        <div style="font-size: 20px; margin-bottom: 10px">🧪 Successful combination!</div>
+                        <div style="font-size: 14px; margin: 5px 0">${element1Type} + ${element2Type}</div>
+                        <div style="font-size: 16px; margin-top: 10px">➜ ${results[0]}</div>
+                    `;
+                    document.body.appendChild(notification);
+                    
+                    setTimeout(() => {
+                        notification.remove();
+                        results.forEach(result => {
+                            const isNew = !this.discoveredElements.has(result);
+                            if (isNew) {
+                                this.discoveredElements.add(result);
+                                this.showNewElementNotification(result);
+                            }
+                            const containerRect = container.getBoundingClientRect();
+                            const x = centerX - containerRect.left;
+                            const y = centerY - containerRect.top;
+                            this.createFloatingElement(result, x, y, container);
+                        });
+                    }, 2000);
+                } else {
+                    this.showFailedCombination(element1Type, element2Type, targetElement, container);
+                }
+            }
+
+            showFailedCombination(element1, element2, targetElement, container) {
+                const effect = document.createElement('div');
+                effect.className = 'combination-effect';
+                effect.style.background = 'radial-gradient(circle, rgba(255,71,87,0.15) 0%, transparent 70%)';
+
+                const rect = targetElement.getBoundingClientRect();
+                const containerRect = container.getBoundingClientRect();
+                
+                effect.style.left = `${rect.left - containerRect.left + rect.width/2 - 50}px`;
+                effect.style.top = `${rect.top - containerRect.top + rect.height/2 - 50}px`;
+                
+                container.appendChild(effect);
+                
+                this.showNotification(`❌ You cannot combine ${element1} with ${element2}`, 'error');
+
+                setTimeout(() => {
+                    effect.remove();
+                }, 1500);
+            }
+
+            showNewElementNotification(element) {
+                const notification = document.createElement('div');
+                notification.className = 'result-notification new-discovery';
+                notification.innerHTML = `
+                    <div style="font-size: 24px; margin-bottom: 10px">🎉 NEW RECYCLED MATERIAL!</div>
+                    <div style="font-size: 20px; margin: 10px 0">${element}</div>
+                    <div style="font-size: 14px; color: #ffeb3b; margin-top: 10px">
+                        Material added to your inventory!
+                    </div>
+                `;
+                document.body.appendChild(notification);
+                if (!this.materialCategories["RECYCLED PRODUCTS"].includes(element)) {
+                    this.materialCategories["RECYCLED PRODUCTS"].push(element);
+                }
+                this.updateDisplay();
+                const audio = new Audio('data:audio/wav;base64,UklGRnoGAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQoGAACBhYqFbF1BODUsKCUpPVY0UYGUr7nF0djd5+vp3tHAt6mdjoV5cG1tcHN3fYeKi4mFfnx3bmpobHF3foWMk5cAAAAA');
+                audio.play().catch(e => console.log('Audio not played:', e));
+
+                setTimeout(() => {
+                    notification.remove();
+                }, 3000);
+            }
+
+            createCombinationEffect(targetElement, container) {
+                const effect = document.createElement('div');
+                effect.className = 'combination-effect';
+                effect.style.background = 'radial-gradient(circle, rgba(0,255,136,0.5) 0%, transparent 70%)';
+                
+                const rect = targetElement.getBoundingClientRect();
+                effect.style.left = `${rect.width/2 - 50}px`;
+                effect.style.top = `${rect.height/2 - 50}px`;
+                
+                container.appendChild(effect);
+                
+                setTimeout(() => {
+                    effect.remove();
+                }, 1000);
+            }
+
+            isPlasticMaterial(element) {
+                return this.materialCategories["PLASTICS"].includes(element);
+            }
+
+            updateDisplay() {
+                this.updateElementsGrid();
+                this.updateStats();
+            }
+
+            updateElementsGrid() {
+                const grid = document.getElementById('elements-grid');
+                grid.innerHTML = '';
+
+                const allCategories = {
+                    "PLASTICS": this.materialCategories["PLASTICS"],
+                    "TEXTILES/FIBERS": this.materialCategories["TEXTILES/FIBERS"],
+                    "METALLIC": this.materialCategories["METALLIC"],
+                    "COMPOUNDS": this.materialCategories["COMPOUNDS"],
+                    "Utensils": [],
+                    "Containers": [],
+                    "Tools": [],
+                    "Components": [],
+                    "RECYCLED PRODUCTS": []
+                };
+
+                for (const [cat, arr] of Object.entries(this.refabricatorProducts)) {
+                    arr.forEach(producto => {
+                        if (this.discoveredElements.has(producto)) {
+                            if (!allCategories[cat]) allCategories[cat] = [];
+                            allCategories[cat].push(producto);
+                        }
+                    });
+                }
+
+                this.materialCategories["RECYCLED PRODUCTS"].forEach(elemento => {
+                    let found = false;
+                    for (const arr of Object.values(this.refabricatorProducts)) {
+                        if (arr.includes(elemento)) {
+                            found = true;
+                            break;
+                        }
+                    }
+                    if (!found && this.discoveredElements.has(elemento)) {
+                        allCategories["RECYCLED PRODUCTS"].push(elemento);
+                    }
+                });
+
+                for (const [category, elements] of Object.entries(allCategories)) {
+                    if (elements && elements.length > 0) {
+                        const categoryHeader = document.createElement('div');
+                        categoryHeader.className = 'category-header';
+                        categoryHeader.style.cssText = `
+                            grid-column: 1 / -1;
+                            padding: 10px;
+                            margin: 10px 0;
+                            background: linear-gradient(90deg, rgba(255,165,79,0.2) 0%, rgba(255,165,79,0) 100%);
+                            border-left: 3px solid #ffa54f;
+                            font-family: 'Orbitron', monospace;
+                            font-size: 14px;
+                            font-weight: bold;
+                            color: #ffa54f;
+                        `;
+                        categoryHeader.textContent = category;
+                        grid.appendChild(categoryHeader);
+                        elements.forEach(element => {
+                            if (this.discoveredElements.has(element)) {
+                                const elementDiv = document.createElement('div');
+                                elementDiv.className = 'element';
+                                elementDiv.textContent = element;
+                                elementDiv.draggable = true;
+
+                                elementDiv.addEventListener('mouseenter', (e) => {
+                                    const info = materialInfo[element];
+                                    if (info) {
+                                        if (tooltipHideTimeout) {
+                                            clearTimeout(tooltipHideTimeout);
+                                            tooltipHideTimeout = null;
+                                        }
+
+                                        if (!tooltipDiv) {
+                                            tooltipDiv = document.createElement('div');
+                                            tooltipDiv.style.position = 'fixed';
+                                            tooltipDiv.style.background = 'linear-gradient(135deg, #222 60%, #333 100%)';
+                                            tooltipDiv.style.color = '#ffd580';
+                                            tooltipDiv.style.padding = '16px 22px';
+                                            tooltipDiv.style.borderRadius = '14px';
+                                            tooltipDiv.style.fontFamily = "'Orbitron', 'Space Mono', monospace";
+                                            tooltipDiv.style.fontSize = '15px';
+                                            tooltipDiv.style.boxShadow = '0 6px 32px rgba(0,0,0,0.35)';
+                                            tooltipDiv.style.zIndex = '2000';
+                                            tooltipDiv.style.whiteSpace = 'pre-line';
+                                            tooltipDiv.style.border = '1.5px solid #ffa54f';
+                                            tooltipDiv.style.width = '320px';
+                                            tooltipDiv.style.pointerEvents = 'none';
+                                            tooltipDiv.style.opacity = '0';
+                                            tooltipDiv.style.transition = 'opacity 0.18s cubic-bezier(.4,2,.3,1)';
+                                            document.body.appendChild(tooltipDiv);
+                                        }
+                                        
+                                        let [title, ...rest] = info.split('\n');
+                                        let html = `<div style="display:flex;align-items:center;gap:10px;">
+                                            <span style="font-size:22px;">🛈</span>
+                                            <span style="font-weight:bold;color:#ffa54f;">${element.replace(/^[^a-zA-Z0-9]+/, '')}</span>
+                                        </div>`;
+                                        html += `<div style="margin-top:8px;line-height:1.5;color:#ffd580;font-size:14px;">${rest.join('<br>')}</div>`;
+                                        tooltipDiv.innerHTML = html;
+
+                                        const rect = elementDiv.getBoundingClientRect();
+                                        const tooltipRect = tooltipDiv.getBoundingClientRect();
+                                        
+                                        let left = rect.right + 14;
+                                        let top = rect.top;
+
+                                        if (left + tooltipRect.width > window.innerWidth) {
+                                            left = Math.max(10, rect.left - tooltipRect.width - 14);
+                                        }
+
+                                        if (top + tooltipRect.height > window.innerHeight) {
+                                            top = Math.max(10, window.innerHeight - tooltipRect.height - 10);
+                                        }
+
+                                        tooltipDiv.style.display = 'block';
+                                        tooltipDiv.style.left = left + 'px';
+                                        tooltipDiv.style.top = top + 'px';
+                                        
+                                        requestAnimationFrame(() => {
+                                            tooltipDiv.style.opacity = '1';
+                                        });
+                                    }
+                                });
+
+                                elementDiv.addEventListener('mouseleave', (e) => {
+                                    const toElement = e.relatedTarget;
+                                    if (toElement && toElement.classList.contains('element')) {
+                                        return;
+                                    }
+
+                                    if (tooltipDiv) {
+                                        tooltipDiv.style.opacity = '0';
+                                        tooltipHideTimeout = setTimeout(() => {
+                                            if (tooltipDiv) {
+                                                tooltipDiv.remove();
+                                                tooltipDiv = null;
+                                            }
+                                        }, 180);
+                                    }
+                                });
+
+                                elementDiv.addEventListener('dragstart', (e) => {
+                                    if (tooltipDiv) {
+                                        tooltipDiv.remove();
+                                        tooltipDiv = null;
+                                    }
+                                    e.dataTransfer.setData('text/plain', element);
+                                    elementDiv.classList.add('dragging');
+                                });
+                                
+                                elementDiv.addEventListener('dragend', () => {
+                                    elementDiv.classList.remove('dragging');
+                                });
+                                
+                                grid.appendChild(elementDiv);
+                            }
+                        });
+                    }
+                }
+            }
+
+            updateStats() {
+                const totalMaterials = this.discoveredElements.size;
+                const totalPossible = 46;
+                const progress = (totalMaterials / totalPossible) * 100;
+                
+                document.getElementById('stats-text').textContent = 
+                    `🚀 Processed materials: ${totalMaterials} / ${totalPossible}`;
+                document.getElementById('progress-fill').style.width = `${progress}%`;
+            }
+
+            handleDragOver(e) {
+                e.preventDefault();
+            }
+
+            handleDragEnter(e) {
+                e.preventDefault();
+                e.target.closest('.combination-zone').classList.add('drag-over');
+            }
+
+            handleDragLeave(e) {
+                const zone = e.target.closest('.combination-zone');
+                if (zone && !zone.contains(e.relatedTarget)) {
+                    zone.classList.remove('drag-over');
+                }
+            }
+
+            handleDrop(e) {
+                e.preventDefault();
+                const zone = e.target.closest('.combination-zone');
+                zone.classList.remove('drag-over');
+                
+                const elementData = e.dataTransfer.getData('text/plain');
+                let element;
+                try {
+                    const parsed = JSON.parse(elementData);
+                    element = parsed.element;
+                } catch {
+                    element = elementData;
+                }
+
+                const existingElements = Array.from(zone.getElementsByClassName('floating-element'));
+                const elementExists = existingElements.some(el => el.dataset.elementType === element);
+                
+                if (!elementExists) {
+                    const rect = zone.getBoundingClientRect();
+                    const x = e.clientX - rect.left;
+                    const y = e.clientY - rect.top;
+                    this.createFloatingElement(element, x, y, zone);
+                } else {
+                    this.showNotification("⚠️ This material is already in the area", "error");
+                }
+            }
+
+            createFloatingElement(element, x, y, container) {
+                const elementId = this.nextElementId++;
+                const floatingDiv = document.createElement('div');
+                floatingDiv.className = 'floating-element';
+                floatingDiv.textContent = element;
+                
+                if (container.id === 'refabricator-output') {
+                    floatingDiv.style.position = 'relative';
+                    floatingDiv.style.left = '0';
+                    floatingDiv.style.top = '0';
+                    floatingDiv.style.margin = '5px';
+                } else {
+                    floatingDiv.style.position = 'absolute';
+                    floatingDiv.style.left = `${x}px`;
+                    floatingDiv.style.top = `${y}px`;
+                    
+                    let offsetX = 0;
+                    let offsetY = 0;
+                    let isMoving = false;
+
+                    const onMouseDown = (e) => {
+                        isMoving = true;
+                        const rect = floatingDiv.getBoundingClientRect();
+                        offsetX = e.clientX - rect.left;
+                        offsetY = e.clientY - rect.top;
+                        e.preventDefault();
+                    };
+
+                    const onMouseMove = (e) => {
+                        if (!isMoving) return;
+
+                        const containerRect = container.getBoundingClientRect();
+                        let newX = e.clientX - containerRect.left - offsetX;
+                        let newY = e.clientY - containerRect.top - offsetY;
+
+                        const elementRect = floatingDiv.getBoundingClientRect();
+                        const maxX = containerRect.width - elementRect.width;
+                        const maxY = containerRect.height - elementRect.height;
+
+                        newX = Math.min(Math.max(0, newX), maxX);
+                        newY = Math.min(Math.max(0, newY), maxY);
+
+                        floatingDiv.style.left = `${newX}px`;
+                        floatingDiv.style.top = `${newY}px`;
+
+                        this.checkProximityAndCombine(floatingDiv, elementId, container);
+                    };
+
+                    const onMouseUp = () => {
+                        if (isMoving) {
+                            this.checkProximityAndCombine(floatingDiv, elementId, container);
+                            isMoving = false;
+                        }
+                    };
+
+                    floatingDiv.addEventListener('mousedown', onMouseDown);
+                    document.addEventListener('mousemove', onMouseMove);
+                    document.addEventListener('mouseup', onMouseUp);
+                }
+
+                floatingDiv.draggable = false;
+                floatingDiv.dataset.elementId = elementId;
+                floatingDiv.dataset.elementType = element;
+
+                container.appendChild(floatingDiv);
+                this.floatingElements.set(elementId, {
+                    element: floatingDiv,
+                    type: element
+                });
+
+                return floatingDiv;
+            }
+
+            removeFloatingElement(id) {
+                const elementData = this.floatingElements.get(id);
+                if (elementData) {
+                    elementData.element.remove();
+                    this.floatingElements.delete(id);
+                }
+            }
+
+            createCombinationEffect(targetElement, container) {
+                const effect = document.createElement('div');
+                effect.className = 'combination-effect';
+                
+                const rect = targetElement.getBoundingClientRect();
+                const containerRect = container.getBoundingClientRect();
+                
+                effect.style.left = `${rect.left - containerRect.left + rect.width / 2 - 50}px`;
+                effect.style.top = `${rect.top - containerRect.top + rect.height / 2 - 50}px`;
+                
+                container.appendChild(effect);
+                
+                setTimeout(() => {
+                    effect.remove();
+                }, 1000);
+            }
+
+            showProductSelector(material, x, y, zone) {
+                const selector = document.getElementById('product-selector');
+                const optionsGrid = document.getElementById('product-options');
+                optionsGrid.innerHTML = '';
+                Object.entries(this.refabricatorProducts).forEach(([category, products]) => {
+                    const categoryHeader = document.createElement('div');
+                    categoryHeader.style.gridColumn = '1 / -1';
+                    categoryHeader.style.color = '#00ff88';
+                    categoryHeader.style.fontWeight = 'bold';
+                    categoryHeader.style.marginTop = '10px';
+                    categoryHeader.textContent = category;
+                    optionsGrid.appendChild(categoryHeader);
+
+                    products.forEach(product => {
+                        const option = document.createElement('div');
+                        option.className = 'product-option';
+                        option.textContent = product;
+                        option.onclick = () => {
+                            this.createProduct(product, material, x, y, zone);
+                            selector.style.display = 'none';
+                        };
+                        optionsGrid.appendChild(option);
+                    });
+                });
+
+                selector.style.display = 'flex';
+                const closeButton = selector.querySelector('.close-selector');
+                closeButton.onclick = () => {
+                    selector.style.display = 'none';
+                };
+            }
+
+            createProduct(product, material, x, y, zone) {
+                const printingBar = document.querySelector('.printing-bar');
+                printingBar.style.width = '0%';
+
+                const refabricatorContainer = document.querySelector('.refabricator-container');
+                const originalBg = refabricatorContainer.style.background;
+
+                const refabricatorInput = document.getElementById('refabricator-input');
+                if (refabricatorInput) refabricatorInput.remove();
+
+                refabricatorContainer.style.background = "url('nasa-printer-close.png') 40px/300px no-repeat";
+
+                setTimeout(() => {
+                    printingBar.style.width = '100%';
+                }, 100);
+
+                setTimeout(() => {
+                    refabricatorContainer.style.background = originalBg;
+
+                    if (!document.getElementById('refabricator-input')) {
+                        const inputDiv = document.createElement('div');
+                        inputDiv.className = 'refabricator-input';
+                        inputDiv.id = 'refabricator-input';
+                        inputDiv.style.position = 'absolute';
+                        inputDiv.style.left = '17%';
+                        inputDiv.style.top = '55%';
+                        inputDiv.style.transform = 'translate(-50%, -50%)';
+                        inputDiv.style.width = '105px';
+                        inputDiv.style.height = '100px';
+                        inputDiv.style.background = 'rgba(0, 255, 136, 0.1)';
+                        inputDiv.style.color = '#00ff88';
+                        inputDiv.style.fontSize = '12px';
+                        inputDiv.textContent = 'Plastic materials here';
+                        refabricatorContainer.appendChild(inputDiv);
+
+                        inputDiv.addEventListener('dragover', e => {
+                            e.preventDefault();
+                            e.stopPropagation();
+                        });
+                        inputDiv.addEventListener('dragenter', e => {
+                            e.preventDefault();
+                            e.stopPropagation();
+                            inputDiv.classList.add('drag-over');
+                        });
+                        inputDiv.addEventListener('dragleave', e => {
+                            if (!inputDiv.contains(e.relatedTarget)) {
+                                inputDiv.classList.remove('drag-over');
+                            }
+                        });
+                        inputDiv.addEventListener('drop', e => this.handleZoneDrop(e, 'refabricator'));
+                    }
+
+                    this.discoveredElements.add(product);
+                    let found = false;
+                    for (const [cat, arr] of Object.entries(this.refabricatorProducts)) {
+                        if (arr.includes(product)) {
+                            if (!this.materialCategories[cat.toUpperCase()]) {
+                                this.materialCategories[cat.toUpperCase()] = [];
+                            }
+                            if (!this.materialCategories[cat.toUpperCase()].includes(product)) {
+                                this.materialCategories[cat.toUpperCase()].push(product);
+                            }
+                            found = true;
+                            break;
+                        }
+                    }
+                    if (!found) {
+                        if (!this.materialCategories["RECYCLED PRODUCTS"].includes(product)) {
+                            this.materialCategories["RECYCLED PRODUCTS"].push(product);
+                        }
+                    }
+                    const output = document.getElementById('refabricator-output');
+                    output.innerHTML = '';
+                    output.style.display = 'flex';
+                    output.style.flexDirection = 'column';
+                    output.style.alignItems = 'center';
+                    output.style.justifyContent = 'flex-start';
+                    const label = document.createElement('div');
+                    label.textContent = 'Manufactured Product:';
+                    label.style.marginBottom = '10px';
+                    label.style.color = '#00ff88';
+                    label.style.fontSize = '20px';
+                    output.appendChild(label);
+                    this.createFloatingElement(product, 0, 0, output);
+                    const btn = document.createElement('button');
+                    btn.id = 'clear-refabricator-output';
+                    btn.textContent = 'Clean Area';
+                    btn.style.cssText = 'margin-top:12px; position:static; background:#00ff88;color:#000;border:none;padding:6px 14px;border-radius:8px;font-size:12px;cursor:pointer;font-family:\'Orbitron\',monospace;font-weight:bold;';
+                    btn.onclick = () => this.clearZone(output);
+                    output.appendChild(btn);
+                    this.showNotification(`✅ You have created: ${product}`, 'success');
+                    this.updateDisplay();
+                    setTimeout(() => {
+                        printingBar.style.width = '0%';
+                    }, 200);
+                }, 1000);
+            }
+
+            clearZone(zone) {
+                Array.from(zone.querySelectorAll('.floating-element')).forEach(el => {
+                    el.remove();
+                });
+                if (zone.id === 'refabricator-output') {
+                    zone.innerHTML = '';
+                    const label = document.createElement('div');
+                    label.textContent = 'Manufacturing Area';
+                    label.style.marginTop = '10px';
+                    label.style.fontSize = '20px';
+                    zone.appendChild(label);
+                    const btn = document.createElement('button');
+                    btn.id = 'clear-refabricator-output';
+                    btn.textContent = 'Clean Area';
+                    btn.style.cssText = 'margin-top:12px; position:static; background:#00ff88;color:#000;border:none;padding:6px 14px;border-radius:8px;font-size:12px;cursor:pointer;font-family:\'Orbitron\',monospace;font-weight:bold;';
+                    btn.onclick = () => this.clearZone(zone);
+                    zone.appendChild(btn);
+                }
+            }
+        }
+        const game = new MarsRecyclingGame();
+        MarsRecyclingGame.prototype.showNotification = function(message, type = 'success') {
+            const notification = document.createElement('div');
+            notification.className = `result-notification ${type}`;
+            notification.textContent = message;
+            document.body.appendChild(notification);
+
+            setTimeout(() => {
+                notification.remove();
+            }, 3000);
+        }
+
+        const materialInfo = {
+            "💭 Bubble Wrap": "Bubble Wrap:\n<img src='pictures_tooltip/bubble_wrap.png' alt='Bubble Wrap' style='width:250px;display:block;margin:10px auto 10px auto;border-radius:12px;box-shadow:0 2px 12px rgba(0,0,0,0.18);'>Bubble Wrap was used by NASA to protect equipment during space missions 🚀. That's right — the same stuff we love to pop for fun has actually been to space! 🌌✨",
+            "♻️ Recycled Plastic": "Recycled Plastic:\n<img src='pictures_tooltip/recycled_plastic.png' alt='Recycled Plastic' style='width:250px;display:block;margin:10px auto 10px auto;border-radius:12px;box-shadow:0 2px 12px rgba(0,0,0,0.18);'>Recycled plastic bottles can be turned into soft, warm fleece jackets — it takes about 25 bottles to make just one! 🧥♻️",
+            "🧪 PLA Filament": "PLA Filament:\n<img src='pictures_tooltip/pla_filament.png' alt='PLA Filament' style='width:250px;display:block;margin:10px auto 10px auto;border-radius:12px;box-shadow:0 2px 12px rgba(0,0,0,0.18);'>PLA filament for 3D printing is made from plants like corn and sugarcane — it’s a plastic that can actually biodegrade! 🌽🧵♻️",
+            "🎯 ABS Filament": "ABS Filament:\n<img src='pictures_tooltip/abs_filament.png' alt='ABS Filament' style='width:200px;display:block;margin:10px auto 10px auto;border-radius:12px;box-shadow:0 2px 12px rgba(0,0,0,0.18);'>ABS filament, often used in 3D printing, is made from the same type of plastic found in LEGO-style building blocks. It’s known for being strong, heat-resistant, and great for creating durable models! 🧱🔥",
+            "📦 Plastic Bags": "Plastics Bags:\n<img src='pictures_tooltip/plastic_bags.png' alt='Plastic Bags' style='width:250px;display:block;margin:10px auto 10px auto;border-radius:12px;box-shadow:0 2px 12px rgba(0,0,0,0.18);'>A single plastic bag can take more than 500 years to break down — but recycling just one saves enough energy to power a light bulb for hours! 💡♻️",
+            "🧵 Synthetic Fibers": "Synthetic Fibers:\n<img src='pictures_tooltip/synthetic_fibers.png' alt='Synthetic Fibers' style='width:250px;display:block;margin:10px auto 10px auto;border-radius:12px;box-shadow:0 2px 12px rgba(0,0,0.18);'>Synthetic fibers like polyester and nylon were first created to imitate silk — but ended up being stronger and cheaper! 🧵💪",
+            "👕 Space Fabric": "Space Fabric:\n<img src='pictures_tooltip/space_fabric.png' alt='Space Fabric' style='width:250px;display:block;margin:10px auto 10px auto;border-radius:12px;box-shadow:0 2px 12px rgba(0,0,0,0.18);'>Space fabrics are woven with metal-coated threads that reflect radiation, keeping astronauts safe from extreme temperatures. 🧑‍🚀✨",
+            "🧺 Cotton Towels": "Cotton Towels:\n<img src='pictures_tooltip/cotton_towels.png' alt='Cotton Towels' style='width:250px;display:block;margin:10px auto 10px auto;border-radius:12px;box-shadow:0 2px 12px rgba(0,0,0,0.18);'>Cotton towels used in space are made with special fibers that don’t float away — they stick to surfaces instead! 🧼🚀",
+            "🎽 Nylon Fibers": "Nylon Fibers:\n<img src='pictures_tooltip/nylon_fibers.png' alt='Nylon Fibers' style='width:250px;display:block;margin:10px auto 10px auto;border-radius:12px;box-shadow:0 2px 12px rgba(0,0,0,0.18);'>Nylon was the first fully synthetic fiber ever made — it was even used for parachutes in World War II! 🪂",
+            "⚙️ Structural Aluminum": "Structural Aluminum:\n<img src='pictures_tooltip/structural_aluminum.png' alt='Structural Aluminum' style='width:250px;display:block;margin:10px auto 10px auto;border-radius:12px;box-shadow:0 2px 12px rgba(0,0,0,0.18);'>Aluminum is so light and strong that 80% of a spacecraft’s structure is made from it. 🚀🔩",
+            "🔧 Metal Struts": "Metal Struts:\n<img src='pictures_tooltip/metal_struts.png' alt='Metal Struts' style='width:250px;display:block;margin:10px auto 10px auto;border-radius:12px;box-shadow:0 2px 12px rgba(0,0,0,0.18);'>Metal struts act like the skeleton of a spacecraft — without them, the structure couldn’t survive launch vibrations! 🦴🚀",
+            "🛠️ Light Alloys": "Light Alloys:\n<img src='pictures_tooltip/metal_struts.png' alt='Light Alloys' style='width:250px;display:block;margin:10px auto 10px auto;border-radius:12px;box-shadow:0 2px 12px rgba(0,0,0,0.18);'>Light alloys mix metals like aluminum and magnesium to make spacecraft strong but easy to lift into orbit. ⚙️🌌",
+            "⛓️ Metal Waste": "Metal Waste:\n<img src='pictures_tooltip/metal_waste.png' alt='Metal Waste' style='width:250px;display:block;margin:10px auto 10px auto;border-radius:12px;box-shadow:0 2px 12px rgba(0,0,0,0.18);'>Astronauts recycle metal waste on missions — some pieces are melted down to make new tools in space! 🔧♻️",
+            "🔬 Polymer Composites": "Polymer Composites:\n<img src='pictures_tooltip/polymer_composites.png' alt='Polymer Composites' style='width:250px;display:block;margin:10px auto 10px auto;border-radius:12px;box-shadow:0 2px 12px rgba(0,0,0,0.18);'>Polymer composites are used in rockets because they’re lighter than metal but just as tough. 🚀🧩",
+            "🛡️ Carbon Fiber": "Carbon Fiber:\n<img src='pictures_tooltip/carbon_fiber.png' alt='Carbon Fiber' style='width:250px;display:block;margin:10px auto 10px auto;border-radius:12px;box-shadow:0 2px 12px rgba(0,0,0,0.18);'>Carbon fiber is five times stronger than steel but weighs almost nothing — perfect for space travel! 💪🌑",
+            "🌡️ Special Resins": "Special Resins:\n<img src='pictures_tooltip/special_resins.png' alt='Special Resins' style='width:250px;display:block;margin:10px auto 10px auto;border-radius:12px;box-shadow:0 2px 12px rgba(0,0,0,0.18);'>Special resins are used to glue parts of spacecraft together — they can survive extreme heat and cold. 🧪🚀",
+            "🧪 Polymeric Matrices": "Polymeric Matrices:\n<img src='pictures_tooltip/polymeric_matrices.png' alt='Polymeric Matrices' style='width:250px;display:block;margin:10px auto 10px auto;border-radius:12px;box-shadow:0 2px 12px rgba(0,0,0,0.18);'>Polymeric matrices act like the “glue” in advanced materials, holding fibers together for extra strength. 🧬🔩",
+            "🥄 Space Cutlery": "Space Cutlery:\n<img src='pictures_tooltip/space_cutlery.png' alt='Space Cutlery' style='width:250px;display:block;margin:10px auto 10px auto;border-radius:12px;box-shadow:0 2px 12px rgba(0,0,0,0.18);'>Space cutlery is magnetized so it doesn’t float away while astronauts eat! 🍴🛰️",
+            "🍽️ Plates and Glasses": "Plates and Glasses:\n<img src='pictures_tooltip/plates_and_glasses.png' alt='Plates and Glasses' style='width:250px;display:block;margin:10px auto 10px auto;border-radius:12px;box-shadow:0 2px 12px rgba(0,0,0,0.18);'>Space plates and glasses are made from lightweight plastic — they stick to trays using velcro! 🍽️✨",
+            "🥢 Multipurpose Utensils": "Multipurpose Utensils:\n<img src='pictures_tooltip/multipurpose_utensils.png' alt='Multipurpose Utensils' style='width:250px;display:block;margin:10px auto 10px auto;border-radius:12px;box-shadow:0 2px 12px rgba(0,0,0,0.18);'>Multipurpose utensils in space are made from titanium — light, strong, and safe to use with any type of food! 🍽️🚀",
+            "🥣 Food Containers": "Food Containers:\n<img src='pictures_tooltip/food_containers.png' alt='Food Containers' style='width:250px;display:block;margin:10px auto 10px auto;border-radius:12px;box-shadow:0 2px 12px rgba(0,0,0,0.18);'>Food containers used in space are made from multi-layer materials that block radiation and prevent bacteria growth — they keep meals safe for months during missions. 🍱",
+            "📦 Airtight Containers": "Airtight Containers:\n<img src='pictures_tooltip/airtight_containers.png' alt='Airtight Containers' style='width:250px;display:block;margin:10px auto 10px auto;border-radius:12px;box-shadow:0 2px 12px rgba(0,0,0,0.18);'>Airtight containers rely on pressure seals that prevent gas exchange — this keeps oxygen levels stable inside spacecraft and protects sensitive experiments. 🫙",
+            "🗑️ Waste Containers": "Waste Containers:\n<img src='pictures_tooltip/waste_containers.png' alt='Waste Containers' style='width:250px;display:block;margin:10px auto 10px auto;border-radius:12px;box-shadow:0 2px 12px rgba(0,0,0,0.18);'>Space waste containers use negative pressure to trap odors and microbes, helping maintain air quality inside the International Space Station (ISS). 🚽",
+            "🥡 Thermal Containers": "Thermal Containers:\n<img src='pictures_tooltip/thermal_containers.png' alt='Thermal Containers' style='width:250px;display:block;margin:10px auto 10px auto;border-radius:12px;box-shadow:0 2px 12px rgba(0,0,0,0.18);'>Thermal containers use reflective insulation made from aluminum and polymer films — the same technology used in astronaut suits to control temperature. ❄️🔥",
+            "🧊 Storage Boxes": "Storage Boxes:\n<img src='pictures_tooltip/storage_boxes.png' alt='Storage Boxes' style='width:250px;display:block;margin:10px auto 10px auto;border-radius:12px;box-shadow:0 2px 12px rgba(0,0,0,0.18);'>Storage boxes in space are designed to resist vibrations and microgravity; many are attached with Velcro or magnets to keep tools from floating away. 📦",
+            "🛠️ Repair Kit": "Repair Kit:\n<img src='pictures_tooltip/repair_kit.png' alt='Repair Kit' style='width:250px;display:block;margin:10px auto 10px auto;border-radius:12px;box-shadow:0 2px 12px rgba(0,0,0,0.18);'>Repair kits on the ISS include 3D-printed tools made from durable thermoplastics — astronauts can print replacements instead of waiting for supplies from Earth. 🧰",
+            "📏 Rules and Meters": "Rules and Meters:\n<img src='pictures_tooltip/rules_and_meters.png' alt='Rules and Meters' style='width:250px;display:block;margin:10px auto 10px auto;border-radius:12px;box-shadow:0 2px 12px rgba(0,0,0,0.18);'>NASA engineers used slide rules to design rockets and plan the Apollo 11 mission that took humans to the Moon — precise math, no computers! 🚀📏",
+            "🔨 Precision Tools": "Precision Tools:\n<img src='pictures_tooltip/precision_tools.png' alt='Precision Tools' style='width:250px;display:block;margin:10px auto 10px auto;border-radius:12px;box-shadow:0 2px 12px rgba(0,0,0,0.18);'>Precision tools are made from titanium or stainless steel because these metals don't deform easily and resist corrosion in vacuum conditions. 🪛",
+            "⚙️ Gears and Pulleys": "Gears and Pulleys:\n<img src='pictures_tooltip/gear_and_pulleys.png' alt='Gears and Pulleys' style='width:250px;display:block;margin:10px auto 10px auto;border-radius:12px;box-shadow:0 2px 12px rgba(0,0,0,0.18);'>Space gears and pulleys are coated with dry lubricants like molybdenum disulfide, which works without liquid oil — since oil would evaporate in space. ⚙️",
+            "🔩 Screws and Nuts": "Screws and Nuts:\n<img src='pictures_tooltip/screw_and_nuts.png' alt='Screws and Nuts' style='width:250px;display:block;margin:10px auto 10px auto;border-radius:12px;box-shadow:0 2px 12px rgba(0,0,0,0.18);'>Space screws and nuts use special threads that resist vibration loosening — essential to prevent parts from detaching during rocket launches. 🔩",
+            "📎 Clips and Fasteners": "Clips and Fasteners:\n<img src='pictures_tooltip/clips_and_fasteners.png' alt='Clips and Fasteners' style='width:250px;display:block;margin:10px auto 10px auto;border-radius:12px;box-shadow:0 2px 12px rgba(0,0,0,0.18);'>Fasteners for spacecraft are tested under vacuum and radiation to ensure they don't weaken — a single failure could endanger an entire mission. 🧷",
+            "🔌 Electronic Cases": "Electronic Cases:\n<img src='pictures_tooltip/electronic_cases.png' alt='Electronic Cases' style='width:250px;display:block;margin:10px auto 10px auto;border-radius:12px;box-shadow:0 2px 12px rgba(0,0,0,0.18);'>Electronics on spacecraft are stored inside aluminum cases that act like shields — they protect circuits from radiation and extreme temperature changes in space. 💻🛰️",
+            "🔧 3D manufactured tool": "3D Manufactured Tool:\n<img src='pictures_tooltip/3d_manufactured_tool.png' alt='3D Manufactured Tool' style='width:250px;display:block;margin:10px auto 10px auto;border-radius:12px;box-shadow:0 2px 12px rgba(0,0,0,0.18);'>Astronauts on the ISS can design and print 3D tools in space using thermoplastic filaments — the first 3D-printed wrench was made in orbit in 2014. 🔧🛰️",
+            "🥄 Plastic Utensils": "Plastic Utensils:\n<img src='pictures_tooltip/plastic_utensils.png' alt='Plastic Utensils' style='width:250px;display:block;margin:10px auto 10px auto;border-radius:12px;box-shadow:0 2px 12px rgba(0,0,0,0.18);'>Some plastic utensils used in space are 3D printed from biodegradable PLA material, designed to be lightweight and safe for microgravity use. 🍴",
+            "📦 Protective Packaging": "Protective Packaging:\n<img src='pictures_tooltip/protective_packaging.png' alt='Protective Packaging' style='width:250px;display:block;margin:10px auto 10px auto;border-radius:12px;box-shadow:0 2px 12px rgba(0,0,0,0.18);'>Protective packaging for space missions often uses layers of bubble wrap and foam to absorb shocks during launch and protect delicate instruments. 📦",
+            "🛠️ Basic Tools": "Basic Tools:\n<img src='pictures_tooltip/basic_tools.png' alt='Basic Tools' style='width:250px;display:block;margin:10px auto 10px auto;border-radius:12px;box-shadow:0 2px 12px rgba(0,0,0,0.18);'>Basic tools aboard the ISS, like wrenches and screwdrivers, are sometimes 3D printed using digital files sent from Earth — a fast solution for urgent repairs. 🔩",
+            "🚰 Piping and Connectors": "Piping and Connectors:\n<img src='pictures_tooltip/piping_and_connectors.png' alt='Piping and Connectors' style='width:250px;display:block;margin:10px auto 10px auto;border-radius:12px;box-shadow:0 2px 12px rgba(0,0,0,0.18);'>Spacecraft use specialized piping and connectors that can withstand extreme pressure changes and temperature variations in space. 🔧",
+            "🏗️ Building Blocks": "Building Blocks:\n<img src='pictures_tooltip/building_blocks.png' alt='Building Blocks' style='width:250px;display:block;margin:10px auto 10px auto;border-radius:12px;box-shadow:0 2px 12px rgba(0,0,0,0.18);'>3D printed building blocks are being tested for constructing lunar bases using Moon dust (regolith) — paving the way for future habitats. 🏗️🌕",
+            "🔧 Simple Replacement Parts": "Simple Replacement Parts:\n<img src='pictures_tooltip/simple_replacement_parts.png' alt='Simple Replacement Parts' style='width:250px;display:block;margin:10px auto 10px auto;border-radius:12px;box-shadow:0 2px 12px rgba(0,0,0,0.18);'>Astronauts can 3D print simple replacement parts on the ISS, reducing the need to send spare components from Earth. ⚙️",
+            "👨‍🚀 Space Underwear": "Space Underwear:\n<img src='pictures_tooltip/space_underwear.png' alt='Space Underwear' style='width:250px;display:block;margin:10px auto 10px auto;border-radius:12px;box-shadow:0 2px 12px rgba(0,0,0,0.18);'>Space underwear is designed with moisture-wicking and antimicrobial fabrics to keep astronauts comfortable during long missions. 🩲",
+            "🧤 Insulated Gloves": "Insulated Gloves:\n<img src='pictures_tooltip/insulated_gloves.png' alt='Insulated Gloves' style='width:250px;display:block;margin:10px auto 10px auto;border-radius:12px;box-shadow:0 2px 12px rgba(0,0,0,0.18);'>Insulated gloves protect astronauts from extreme cold in space — they can handle objects exposed to temperatures below -150°C. 🧤❄️",
+            "🏗️ Base Structure": "Base Structure:\n<img src='pictures_tooltip/base_structure.png' alt='Base Structure' style='width:250px;display:block;margin:10px auto 10px auto;border-radius:12px;box-shadow:0 2px 12px rgba(0,0,0,0.18);'>The base structure of spacecraft is made from aluminum and titanium alloys, providing both strength and lightness for stability in orbit. 🛠️",
+            "⚡ Metallic Conductors": "Metallic Conductors:\n<img src='pictures_tooltip/metallic_conductors.png' alt='Metallic Conductors' style='width:250px;display:block;margin:10px auto 10px auto;border-radius:12px;box-shadow:0 2px 12px rgba(0,0,0,0.18);'>Metallic conductors in space electronics use gold or silver coatings to improve conductivity and resist corrosion in vacuum conditions. ⚡",
+            "🚀 Advanced Panels": "Advanced Panels:\n<img src='pictures_tooltip/advanced_panels.png' alt='Advanced Panels' style='width:250px;display:block;margin:10px auto 10px auto;border-radius:12px;box-shadow:0 2px 12px rgba(0,0,0,0.18);'>Advanced panels on spacecraft are made from carbon fiber composites that combine low weight with high thermal and structural resistance. 🛰️",
+            "🛡️ Heat Shields": "Heat Shields:\n<img src='pictures_tooltip/heat_shields.png' alt='Heat Shields' style='width:250px;display:block;margin:10px auto 10px auto;border-radius:12px;box-shadow:0 2px 12px rgba(0,0,0,0.18);'>Heat shields protect spacecraft during re-entry by using ablative materials that burn away gradually, carrying heat with them. 🔥",
+            "🪨 Martian Dust": "Martian Dust:\n<img src='pictures_tooltip/martian_dust.png' alt='Martian Dust' style='width:250px;display:block;margin:10px auto 10px auto;border-radius:12px;box-shadow:0 2px 12px rgba(0,0,0,0.18);'>Martian dust is composed of tiny iron-rich particles that give the Red Planet its color and can interfere with solar panels and instruments. 🌌🪨"
+        };
+
+        let tooltipDiv = null;
+        let tooltipHideTimeout = null;
+
+        MarsRecyclingGame.prototype.updateElementsGrid = function() {
+            const grid = document.getElementById('elements-grid');
+            grid.innerHTML = '';
+
+            const allCategories = {
+                "PLASTICS": this.materialCategories["PLASTICS"],
+                "TEXTILES/FIBERS": this.materialCategories["TEXTILES/FIBERS"],
+                "METALLIC": this.materialCategories["METALLIC"],
+                "COMPOUNDS": this.materialCategories["COMPOUNDS"],
+                "Utensils": [],
+                "Containers": [],
+                "Tools": [],
+                "Components": [],
+                "RECYCLED PRODUCTS": []
+            };
+
+            for (const [cat, arr] of Object.entries(this.refabricatorProducts)) {
+                arr.forEach(producto => {
+                    if (this.discoveredElements.has(producto)) {
+                        if (!allCategories[cat]) allCategories[cat] = [];
+                        allCategories[cat].push(producto);
+                    }
+                });
+            }
+
+            this.materialCategories["RECYCLED PRODUCTS"].forEach(elemento => {
+                let found = false;
+                for (const arr of Object.values(this.refabricatorProducts)) {
+                    if (arr.includes(elemento)) {
+                        found = true;
+                        break;
+                    }
+                }
+                if (!found && this.discoveredElements.has(elemento)) {
+                    allCategories["RECYCLED PRODUCTS"].push(elemento);
+                }
+            });
+
+            for (const [category, elements] of Object.entries(allCategories)) {
+                if (elements && elements.length > 0) {
+                    const categoryHeader = document.createElement('div');
+                    categoryHeader.className = 'category-header';
+                    categoryHeader.style.cssText = `
+                        grid-column: 1 / -1;
+                        padding: 10px;
+                        margin: 10px 0;
+                        background: linear-gradient(90deg, rgba(255,165,79,0.2) 0%, rgba(255,165,79,0) 100%);
+                        border-left: 3px solid #ffa54f;
+                        font-family: 'Orbitron', monospace;
+                        font-size: 14px;
+                        font-weight: bold;
+                        color: #ffa54f;
+                    `;
+                    categoryHeader.textContent = category;
+                    grid.appendChild(categoryHeader);
+                    elements.forEach(element => {
+                        if (this.discoveredElements.has(element)) {
+                            const elementDiv = document.createElement('div');
+                            elementDiv.className = 'element';
+                            elementDiv.textContent = element;
+                            elementDiv.draggable = true;
+
+                            elementDiv.addEventListener('mouseenter', (e) => {
+                                const info = materialInfo[element];
+                                if (info) {
+                                    if (tooltipHideTimeout) {
+                                        clearTimeout(tooltipHideTimeout);
+                                        tooltipHideTimeout = null;
+                                    }
+
+                                    if (!tooltipDiv) {
+                                        tooltipDiv = document.createElement('div');
+                                        tooltipDiv.style.position = 'fixed';
+                                        tooltipDiv.style.background = 'linear-gradient(135deg, #222 60%, #333 100%)';
+                                        tooltipDiv.style.color = '#ffd580';
+                                        tooltipDiv.style.padding = '16px 22px';
+                                        tooltipDiv.style.borderRadius = '14px';
+                                        tooltipDiv.style.fontFamily = "'Orbitron', 'Space Mono', monospace";
+                                        tooltipDiv.style.fontSize = '15px';
+                                        tooltipDiv.style.boxShadow = '0 6px 32px rgba(0,0,0,0.35)';
+                                        tooltipDiv.style.zIndex = '2000';
+                                        tooltipDiv.style.whiteSpace = 'pre-line';
+                                        tooltipDiv.style.border = '1.5px solid #ffa54f';
+                                        tooltipDiv.style.width = '320px';
+                                        tooltipDiv.style.pointerEvents = 'none';
+                                        tooltipDiv.style.opacity = '0';
+                                        tooltipDiv.style.transition = 'opacity 0.18s cubic-bezier(.4,2,.3,1)';
+                                        document.body.appendChild(tooltipDiv);
+                                    }
+                                    
+                                    let [title, ...rest] = info.split('\n');
+                                    let html = `<div style="display:flex;align-items:center;gap:10px;">
+                                        <span style="font-size:22px;">🛈</span>
+                                        <span style="font-weight:bold;color:#ffa54f;">${element.replace(/^[^a-zA-Z0-9]+/, '')}</span>
+                                    </div>`;
+                                    html += `<div style="margin-top:8px;line-height:1.5;color:#ffd580;font-size:14px;">${rest.join('<br>')}</div>`;
+                                    tooltipDiv.innerHTML = html;
+
+                                    const rect = elementDiv.getBoundingClientRect();
+                                    const tooltipRect = tooltipDiv.getBoundingClientRect();
+                                    
+                                    let left = rect.right + 14;
+                                    let top = rect.top;
+
+                                    if (left + tooltipRect.width > window.innerWidth) {
+                                        left = Math.max(10, rect.left - tooltipRect.width - 14);
+                                    }
+
+                                    if (top + tooltipRect.height > window.innerHeight) {
+                                        top = Math.max(10, window.innerHeight - tooltipRect.height - 10);
+                                    }
+
+                                    tooltipDiv.style.display = 'block';
+                                    tooltipDiv.style.left = left + 'px';
+                                    tooltipDiv.style.top = top + 'px';
+                                    
+                                    requestAnimationFrame(() => {
+                                        tooltipDiv.style.opacity = '1';
+                                    });
+                                }
+                            });
+
+                            elementDiv.addEventListener('mouseleave', (e) => {
+
+                                const toElement = e.relatedTarget;
+                                if (toElement && toElement.classList.contains('element')) {
+                                    return;
+                                }
+
+                                if (tooltipDiv) {
+                                    tooltipDiv.style.opacity = '0';
+                                    tooltipHideTimeout = setTimeout(() => {
+                                        if (tooltipDiv) {
+                                            tooltipDiv.remove();
+                                            tooltipDiv = null;
+                                        }
+                                    }, 180);
+                                }
+                            });
+
+                            elementDiv.addEventListener('dragstart', (e) => {
+                                if (tooltipDiv) {
+                                    tooltipDiv.remove();
+                                    tooltipDiv = null;
+                                }
+                                e.dataTransfer.setData('text/plain', element);
+                                elementDiv.classList.add('dragging');
+                            });
+                            
+                            elementDiv.addEventListener('dragend', () => {
+                                elementDiv.classList.remove('dragging');
+                            });
+                            
+                            grid.appendChild(elementDiv);
+                        }
+                    });
+                }
+            }
+        }
+    </script>
+</body>
+</html>

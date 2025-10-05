@@ -64,7 +64,7 @@
       "key": "player1:AmcoSmJ1AFjK8Ormc7IFz",
       "userName": "player1",
       "wasteId": "AmcoSmJ1AFjK8Ormc7IFz",
-      "qty": 3
+      "qty": 4
     },
     {
       "id": "q6hDNrllWkzByuTeGERGh",
@@ -85,7 +85,7 @@
       "key": "player1:dr9tXfbkbpG8hRGohcgcH",
       "userName": "player1",
       "wasteId": "dr9tXfbkbpG8hRGohcgcH",
-      "qty": 3
+      "qty": 4
     }
   ],
   "scores": [
@@ -97,7 +97,7 @@
     {
       "id": "hW0oWouZweF8MMS1bulut",
       "userName": "player1",
-      "score": 13
+      "score": 15
     },
     {
       "id": "h-rCEbWLicNS7ykh1PSbi",
@@ -126,6 +126,11 @@
     },
     {
       "id": "Gkvq7JWkClEALybR3htNi",
+      "userName": "player1",
+      "score": 10
+    },
+    {
+      "id": "jjPOnHZp1bjVp5b7fUgHn",
       "userName": "player1",
       "score": 10
     }
