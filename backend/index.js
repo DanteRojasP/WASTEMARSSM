@@ -13,7 +13,7 @@ app.use(express.json());
 const FRONTEND_URL = process.env.FRONTEND_URL || "http://35.202.126.253:5173";
 app.use(cors({ origin: FRONTEND_URL }));
 
-// 🔹 Historial de conversación (simple en memoria)
+
 const conversations = {};
 
 const SYSTEM_PROMPT = `
@@ -31,7 +31,7 @@ interpret that response in the context of your last question or suggestion.
 If someone asks about other topics, kindly reply that you only talk about Martian recycling.
 `;
 
-// ✅ Ruta de asistente
+
 app.post("/api/assistant", async (req, res) => {
   try {
     const { message, sessionId = "default" } = req.body;
@@ -47,7 +47,7 @@ app.post("/api/assistant", async (req, res) => {
       conversations[sessionId] = [];
     }
 
-    // 1️⃣ Buscar en recyclingData con keywords
+    
     for (const [material, data] of Object.entries(recyclingData)) {
       if (
         (data.keywords ?? [material]).some(k =>
@@ -64,10 +64,10 @@ app.post("/api/assistant", async (req, res) => {
       }
     }
 
-    // 2️⃣ Si no está en DB, usar OpenAI con historial
+   
     conversations[sessionId].push({ role: "user", content: message });
 
-    // ✅ Preparamos historial (SYSTEM_PROMPT siempre va primero)
+    
     const history = [
       { role: "system", content: SYSTEM_PROMPT },
       ...conversations[sessionId].slice(-10) // solo últimos 10 mensajes para no sobrecargar
@@ -95,7 +95,7 @@ app.post("/api/assistant", async (req, res) => {
     const data = await r.json();
     const reply = data.choices?.[0]?.message?.content ?? "No recibí respuesta.";
 
-    // Guardar respuesta en historial
+   
     conversations[sessionId].push({ role: "assistant", content: reply });
 
     res.json({ reply });
@@ -106,7 +106,7 @@ app.post("/api/assistant", async (req, res) => {
   }
 });
 
-// ✅ Ruta de bienvenida
+
 app.get("/api/welcome", (req, res) => {
   res.json({
     reply: "👋 Welcome to the Martian Recycling Assistant. Ask me how to recycle materials on Mars, and I’ll tell you how to do it."
