@@ -77,7 +77,7 @@ export default function AssistantWidget() {
       console.error(err)
       setMessages((m) => [
         ...m,
-        { role: "assistant", text: "💤 At this moment, I’m sleeping." },
+        { role: "assistant", text: "💤🐕 At this moment, I’m sleeping." },
       ])
     } finally {
       setLoading(false)
@@ -189,7 +189,7 @@ export default function AssistantWidget() {
                 </div>
               ))}
               {loading && (
-                <div className="text-sm text-[#C67B5C]">Escribiendo...</div>
+                <div className="text-sm text-[#C67B5C]">Writing...</div>
               )}
             </div>
 
@@ -214,7 +214,7 @@ export default function AssistantWidget() {
                   if (e.key === "Enter") send()
                 }}
                 className="flex-1 bg-[#1c1c1c] p-2 rounded-full text-sm text-white placeholder-gray-500"
-                placeholder="Escribe tu mensaje..."
+                placeholder="Write your message..."
               />
               <button
                 onClick={send}

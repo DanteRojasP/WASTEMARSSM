@@ -10,7 +10,7 @@ dotenv.config();
 const app = express();
 app.use(express.json());
 
-const FRONTEND_URL = process.env.FRONTEND_URL || "http://localhost:5173";
+const FRONTEND_URL = process.env.FRONTEND_URL || "http://35.202.126.253:5173";
 app.use(cors({ origin: FRONTEND_URL }));
 
 // 🔹 Historial de conversación (simple en memoria)
@@ -114,4 +114,6 @@ app.get("/api/welcome", (req, res) => {
 });
 
 const port = process.env.PORT || 3001;
-app.listen(port, () => console.log(`Assistant proxy running on http://localhost:${port}`));
+app.listen(port, "0.0.0.0", () =>
+  console.log(`Assistant proxy running on http://0.0.0.0:${port}`)
+);

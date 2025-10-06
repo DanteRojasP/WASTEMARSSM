@@ -105,51 +105,12 @@
             margin-right: 20px;
         }
 
-        .stats .progress-bar {
-            width: 250px;
-            height: 12px;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 10px;
-            overflow: hidden;
-            border: 1px solid rgba(255, 165, 79, 0.3);
-            position: relative;
-            margin-left: 10px;
-        }
-
-        .stats .progress-bar::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
-            animation: scan 2s linear infinite;
-        }
 
         @keyframes scan {
             0% { transform: translateX(-100%); }
             100% { transform: translateX(100%); }
         }
 
-        .stats .progress-fill {
-            height: 100%;
-            background: linear-gradient(90deg, #000000 0%, #ffa54f 50%, #ffffff 100%);
-            transition: width 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            position: relative;
-            border-radius: 10px;
-        }
-
-        .stats .progress-fill::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            right: 0;
-            width: 20px;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.5));
-            filter: blur(2px);
-        }
 
         body {
             font-family: 'Space Mono', monospace;
@@ -605,16 +566,6 @@
             width: 100%;
         }
 
-        .progress-bar {
-            width: 250px;
-            height: 12px;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 10px;
-            overflow: hidden;
-            border: 1px solid rgba(255, 165, 79, 0.3);
-            position: relative;
-            margin-left: 10px;
-        }
 
         #stats-text {
             color: #ffffff;
@@ -839,6 +790,7 @@
     </style>
 </head>
 <body>
+    </div>
 
     <div class="container">
         <div class="main-content">
@@ -849,10 +801,17 @@
             </div>
 
             <div class="workspace-panel panel-base">
-                <h3 style="margin-bottom: 20px; color: #ffa54f; font-family: 'Orbitron', monospace; font-size: 24px;">
+                <h3 style="margin-bottom: -20px; color: #ffa54f; font-family: 'Orbitron', monospace; font-size: 24px;">
                     ⚗️ Automatic Combination Zone
                 </h3>
                 
+                <div style="text-align: center; margin-bottom: -20px;">
+                    <span id="stats-text" style="white-space: nowrap; font-family: 'Orbitron', monospace;">🚀 Processed materials: 0 / 46</span>
+                    <div class="progress-bar" style="margin: 5px auto; width: 250px;">
+                        <div class="progress-fill" id="progress-fill" style="width: 0%"></div>
+                    </div>
+                </div>
+
                 <div class="combination-zone" id="combination-zone">
                     <div style="text-align: center;">
                         <div style="font-size: 48px; margin-bottom: 10px;">🔬</div>
@@ -868,8 +827,8 @@
                     <h3 style="color: #00ff88; font-family: 'Orbitron', monospace; font-size: 25px; margin-bottom: 5px;">
                             🖨️ Refabricator - 3D printer
                     </h3>
-                    <div style="color: #00ff88; font-size: 20px; text-align: center; margin: 0 auto -60px auto; max-width: 750px; line-height: 1.5; padding: 0 20px; font-family: 'Orbitron', monospace;">
-        NASA's Refabricator is a device that accepts plastic materials of different sizes and shapes and converts them into filament for 3D printing. The entire process is performed automatically in a single machine, approximately the size of a dorm room refrigerator.
+                    <div style="color: #ffffff; font-size: 20px; text-align: center; margin: 0 auto -60px auto; max-width: 900px; line-height: 1.5; padding: 0 20px; font-family: 'Orbitron', monospace;">
+        This machine is a device that will accept plastic materials of various sizes and shapes and turn them in to the feedstock used to 3D print items. The whole process happens in a single automated machine about the size of a dorm room refrigerator.
     </div>
                     <div class="refabricator-container" style="background: url('./nasa-printer.png') 40px/300px no-repeat; height: 300px; position: relative;">
                         <div class="refabricator-input" id="refabricator-input" 
@@ -1492,11 +1451,14 @@
             updateStats() {
                 const totalMaterials = this.discoveredElements.size;
                 const totalPossible = 46;
-                const progress = (totalMaterials / totalPossible) * 100;
-                
+                const progress = Math.round((totalMaterials / totalPossible) * 100);
                 document.getElementById('stats-text').textContent = 
                     `🚀 Processed materials: ${totalMaterials} / ${totalPossible}`;
-                document.getElementById('progress-fill').style.width = `${progress}%`;
+                const progressBar = document.getElementById('progress-fill');
+                progressBar.style.transition = 'width 0.8s ease-out';
+                setTimeout(() => {
+                    progressBar.style.width = `${progress}%`;
+                }, 100);
             }
 
             handleDragOver(e) {
@@ -1808,13 +1770,13 @@
             "🧪 PLA Filament": "PLA Filament:\n<img src='pictures_tooltip/pla_filament.png' alt='PLA Filament' style='width:250px;display:block;margin:10px auto 10px auto;border-radius:12px;box-shadow:0 2px 12px rgba(0,0,0,0.18);'>PLA filament for 3D printing is made from plants like corn and sugarcane — it’s a plastic that can actually biodegrade! 🌽🧵♻️",
             "🎯 ABS Filament": "ABS Filament:\n<img src='pictures_tooltip/abs_filament.png' alt='ABS Filament' style='width:200px;display:block;margin:10px auto 10px auto;border-radius:12px;box-shadow:0 2px 12px rgba(0,0,0,0.18);'>ABS filament, often used in 3D printing, is made from the same type of plastic found in LEGO-style building blocks. It’s known for being strong, heat-resistant, and great for creating durable models! 🧱🔥",
             "📦 Plastic Bags": "Plastics Bags:\n<img src='pictures_tooltip/plastic_bags.png' alt='Plastic Bags' style='width:250px;display:block;margin:10px auto 10px auto;border-radius:12px;box-shadow:0 2px 12px rgba(0,0,0,0.18);'>A single plastic bag can take more than 500 years to break down — but recycling just one saves enough energy to power a light bulb for hours! 💡♻️",
-            "🧵 Synthetic Fibers": "Synthetic Fibers:\n<img src='pictures_tooltip/synthetic_fibers.png' alt='Synthetic Fibers' style='width:250px;display:block;margin:10px auto 10px auto;border-radius:12px;box-shadow:0 2px 12px rgba(0,0,0.18);'>Synthetic fibers like polyester and nylon were first created to imitate silk — but ended up being stronger and cheaper! 🧵💪",
+            "🧵 Synthetic Fibers": "Synthetic Fibers:\n<img src='pictures_tooltip/synthetic_fibers.png' alt='Synthetic Fibers' style='width:250px;display:block;margin:10px auto 10px auto;border-radius:12px;box-shadow:0 2px 12px rgba(0,0,0,0.18);'>Synthetic fibers like polyester and nylon were first created to imitate silk — but ended up being stronger and cheaper! 🧵💪",
             "👕 Space Fabric": "Space Fabric:\n<img src='pictures_tooltip/space_fabric.png' alt='Space Fabric' style='width:250px;display:block;margin:10px auto 10px auto;border-radius:12px;box-shadow:0 2px 12px rgba(0,0,0,0.18);'>Space fabrics are woven with metal-coated threads that reflect radiation, keeping astronauts safe from extreme temperatures. 🧑‍🚀✨",
             "🧺 Cotton Towels": "Cotton Towels:\n<img src='pictures_tooltip/cotton_towels.png' alt='Cotton Towels' style='width:250px;display:block;margin:10px auto 10px auto;border-radius:12px;box-shadow:0 2px 12px rgba(0,0,0,0.18);'>Cotton towels used in space are made with special fibers that don’t float away — they stick to surfaces instead! 🧼🚀",
             "🎽 Nylon Fibers": "Nylon Fibers:\n<img src='pictures_tooltip/nylon_fibers.png' alt='Nylon Fibers' style='width:250px;display:block;margin:10px auto 10px auto;border-radius:12px;box-shadow:0 2px 12px rgba(0,0,0,0.18);'>Nylon was the first fully synthetic fiber ever made — it was even used for parachutes in World War II! 🪂",
             "⚙️ Structural Aluminum": "Structural Aluminum:\n<img src='pictures_tooltip/structural_aluminum.png' alt='Structural Aluminum' style='width:250px;display:block;margin:10px auto 10px auto;border-radius:12px;box-shadow:0 2px 12px rgba(0,0,0,0.18);'>Aluminum is so light and strong that 80% of a spacecraft’s structure is made from it. 🚀🔩",
             "🔧 Metal Struts": "Metal Struts:\n<img src='pictures_tooltip/metal_struts.png' alt='Metal Struts' style='width:250px;display:block;margin:10px auto 10px auto;border-radius:12px;box-shadow:0 2px 12px rgba(0,0,0,0.18);'>Metal struts act like the skeleton of a spacecraft — without them, the structure couldn’t survive launch vibrations! 🦴🚀",
-            "🛠️ Light Alloys": "Light Alloys:\n<img src='pictures_tooltip/metal_struts.png' alt='Light Alloys' style='width:250px;display:block;margin:10px auto 10px auto;border-radius:12px;box-shadow:0 2px 12px rgba(0,0,0,0.18);'>Light alloys mix metals like aluminum and magnesium to make spacecraft strong but easy to lift into orbit. ⚙️🌌",
+            "🛠️ Light Alloys": "Light Alloys:\n<img src='pictures_tooltip/light_alloys.png' alt='Light Alloys' style='width:250px;display:block;margin:10px auto 10px auto;border-radius:12px;box-shadow:0 2px 12px rgba(0,0,0,0.18);'>Light alloys mix metals like aluminum and magnesium to make spacecraft strong but easy to lift into orbit. ⚙️🌌",
             "⛓️ Metal Waste": "Metal Waste:\n<img src='pictures_tooltip/metal_waste.png' alt='Metal Waste' style='width:250px;display:block;margin:10px auto 10px auto;border-radius:12px;box-shadow:0 2px 12px rgba(0,0,0,0.18);'>Astronauts recycle metal waste on missions — some pieces are melted down to make new tools in space! 🔧♻️",
             "🔬 Polymer Composites": "Polymer Composites:\n<img src='pictures_tooltip/polymer_composites.png' alt='Polymer Composites' style='width:250px;display:block;margin:10px auto 10px auto;border-radius:12px;box-shadow:0 2px 12px rgba(0,0,0,0.18);'>Polymer composites are used in rockets because they’re lighter than metal but just as tough. 🚀🧩",
             "🛡️ Carbon Fiber": "Carbon Fiber:\n<img src='pictures_tooltip/carbon_fiber.png' alt='Carbon Fiber' style='width:250px;display:block;margin:10px auto 10px auto;border-radius:12px;box-shadow:0 2px 12px rgba(0,0,0,0.18);'>Carbon fiber is five times stronger than steel but weighs almost nothing — perfect for space travel! 💪🌑",
