@@ -1,4 +1,4 @@
-// backend/recyclingCombinations.js
+
 export const recyclingData = {
   "plastic_aluminum_panels": {
     keywords: ["plastic", "aluminum", "panels"],
