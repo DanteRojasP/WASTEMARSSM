@@ -1,4 +1,4 @@
-// backend/server.js
+
 import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
@@ -42,7 +42,6 @@ app.post("/api/assistant", async (req, res) => {
 
     const userMessage = message.toLowerCase();
 
-    // Crear sesión si no existe
     if (!conversations[sessionId]) {
       conversations[sessionId] = [];
     }
@@ -70,7 +69,7 @@ app.post("/api/assistant", async (req, res) => {
     
     const history = [
       { role: "system", content: SYSTEM_PROMPT },
-      ...conversations[sessionId].slice(-10) // solo últimos 10 mensajes para no sobrecargar
+      ...conversations[sessionId].slice(-10)
     ];
 
     const r = await fetch("https://api.openai.com/v1/chat/completions", {
