@@ -5,24 +5,20 @@ import * as THREE from "three";
 import { COLONIES } from "../../data/colonies";
 import { MISSIONS } from "../../data/missions";
 
-// === Texturas ===
 const marsTexture = "/textures/mars/mars_color.jpg";
 const deimosTexture = "/textures/moons/deimos.jpg";
 
-// Datos Marte
 const MARS = {
   name: "Marte",
   radius: 3389,
   orbit: 227.9e6,
-  period: 687, // días
-  glbPath: null, // opcional
+  period: 687, 
+  glbPath: null, 
 };
 
-// Escalas
 const DIST_SCALE = 1 / 5e5;
 const SIZE_SCALE = 1 / 1000;
 
-// Lunas
 const PHOBOS = {
   glbPath: "/models/phobos.glb",
   radius: 22.6,
@@ -39,7 +35,6 @@ const DEIMOS = {
 
 const START_DATE = new Date("1960-01-01");
 
-// === Conversión lat/lon → coordenadas 3D ===
 function latLongToVector3(lat, lon, radius) {
   const phi = (90 - lat) * (Math.PI / 180);
   const theta = (lon + 180) * (Math.PI / 180);
@@ -50,7 +45,6 @@ function latLongToVector3(lat, lon, radius) {
   );
 }
 
-// 🌌 Fondo estrellado 3D dinámico
 function SpaceBackground({ starCount = 7000 }) {
   const starsRef = useRef();
 
@@ -167,7 +161,6 @@ export default function Mars({
       <SpaceBackground />
 
       <group ref={marsGroupRef}>
-        {/* === Marte === */}
         {marsGLB ? (
           <primitive object={marsGLB} scale={[marsSize, marsSize, marsSize]} />
         ) : (
@@ -177,7 +170,6 @@ export default function Mars({
           </mesh>
         )}
 
-        {/* === Fobos === */}
         {phobosGLB ? (
           <primitive
             ref={phobosRef}
@@ -191,7 +183,6 @@ export default function Mars({
           </mesh>
         )}
 
-        {/* === Deimos === */}
         {deimosGLB ? (
           <primitive
             ref={deimosRef}
@@ -205,7 +196,6 @@ export default function Mars({
           </mesh>
         )}
 
-        {/* === Órbita de Marte === */}
         {!centerOnMars && showOrbit && (
           <mesh rotation={[-Math.PI / 2, 0, 0]}>
             <ringGeometry args={[marsDistance - 0.02, marsDistance + 0.02, 128]} />
@@ -218,7 +208,6 @@ export default function Mars({
           </mesh>
         )}
 
-        {/* === Colonias === */}
         {shouldShowColonies &&
           COLONIES.filter((c) => new Date(c.established) <= currentDate).map(
             (colony, i) => {
@@ -234,7 +223,7 @@ export default function Mars({
                   key={colony.id}
                   position={basePos.add(offset).toArray()}
                   distanceFactor={8}
-                  zIndexRange={[0, 5]} // ✅ evita pasar sobre la UI
+                  zIndexRange={[0, 5]} 
                 >
                   <div
                     className="colony-marker marker-3d cursor-pointer"
@@ -263,7 +252,6 @@ export default function Mars({
             }
           )}
 
-        {/* === Misiones === */}
         {shouldShowMissions &&
           MISSIONS.filter((m) => new Date(m.date) <= currentDate).map(
             (mission, i) => {
@@ -277,7 +265,7 @@ export default function Mars({
                   key={mission.id}
                   position={posVec.toArray()}
                   distanceFactor={8}
-                  zIndexRange={[0, 5]} // ✅ igual aquí
+                  zIndexRange={[0, 5]} 
                 >
                   <div
                     className="colony-marker marker-3d cursor-pointer"
